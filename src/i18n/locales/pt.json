@@ -1,0 +1,250 @@
+{
+  "common": {
+    "cta_primary": "Pedir Proposta",
+    "cta_whatsapp": "Falar no WhatsApp",
+    "cta_contact": "Entrar em Contacto",
+    "learn_more": "Saber Mais",
+    "see_plans": "Ver Planos",
+    "see_results": "Ver Resultados",
+    "read_more": "Ler Mais",
+    "view_all": "Ver Tudo",
+    "close": "Fechar",
+    "loading": "A carregar...",
+    "language": "Idioma"
+  },
+  "nav": {
+    "home": "Início",
+    "services": "Serviços",
+    "about": "Sobre",
+    "plans": "Planos",
+    "results": "Resultados",
+    "testimonials": "Depoimentos",
+    "blog": "Blog",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "headline": "Mais Leads, Mais Clientes, Mais Resultados",
+    "subheadline_1": "Para o Seu Negócio em Portugal",
+    "description": "Transformamos o seu investimento em marketing digital em resultados reais e mensuráveis. Especialistas em tráfego pago, social media e conversão para negócios locais em Lisboa, Cascais e Oeiras.",
+    "trust_line": "Trabalhamos com dados reais, prazos realistas e transparência total.",
+    "stats": {
+      "clients": "Clientes Activos",
+      "campaigns": "Campanhas Geridas",
+      "investment": "Em Investimento Gerido",
+      "ctr": "CTR Médio"
+    }
+  },
+  "services": {
+    "title": "Serviços de Performance",
+    "subtitle": "Tudo o que precisa para gerar leads e vendas online",
+    "paid_traffic": {
+      "title": "Tráfego Pago",
+      "description": "Meta Ads e Google Ads optimizados para conversão. Acompanhamento diário, testes A/B e optimização contínua para maximizar o retorno.",
+      "for_who": "Para quem quer resultados rápidos e escaláveis",
+      "deliverables": ["Campanhas optimizadas", "Relatórios semanais", "Teste de públicos", "Análise de conversão"]
+    },
+    "social_media": {
+      "title": "Gestão de Redes Sociais",
+      "description": "Estratégia, criação de conteúdo e gestão de comunidade para Instagram, Facebook e LinkedIn.",
+      "for_who": "Para marcas que querem presença relevante",
+      "deliverables": ["Calendário editorial", "Posts criativos", "Engagement", "Relatórios mensais"]
+    },
+    "content": {
+      "title": "Produção de Conteúdo",
+      "description": "Textos, imagens e vídeos profissionais que convertem visitantes em clientes.",
+      "for_who": "Para negócios que precisam de materiais de qualidade",
+      "deliverables": ["Copywriting persuasivo", "Design gráfico", "Edição de vídeo", "Banco de imagens"]
+    },
+    "creatives": {
+      "title": "Criativos para Anúncios",
+      "description": "Design de anúncios testados e validados para Meta Ads e Google Ads.",
+      "for_who": "Para campanhas de alto impacto",
+      "deliverables": ["Banners", "Stories", "Vídeos curtos", "Carrosséis"]
+    },
+    "websites": {
+      "title": "Websites & Landing Pages",
+      "description": "Sites rápidos, responsivos e optimizados para conversão.",
+      "for_who": "Para negócios que querem vender online",
+      "deliverables": ["Design moderno", "Mobile-first", "SEO técnico", "Formulários integrados"]
+    },
+    "seo": {
+      "title": "SEO Local",
+      "description": "Optimização para aparecer nas pesquisas locais do Google.",
+      "for_who": "Para negócios que dependem de clientes locais",
+      "deliverables": ["Google My Business", "Keywords locais", "Citations", "Reviews management"]
+    },
+    "automation": {
+      "title": "Automação de Leads",
+      "description": "Integração com WhatsApp para resposta rápida e qualificação automática.",
+      "for_who": "Para equipas que querem eficiência",
+      "deliverables": ["Fluxos automáticos", "Qualificação de leads", "CRM básico", "Notificações"]
+    }
+  },
+  "niches": {
+    "title": "Especialistas em Negócios Locais",
+    "subtitle": "Estratégias personalizadas para cada sector",
+    "real_estate": {
+      "title": "Imobiliárias",
+      "description": "Gere leads qualificados para compra, venda e arrendamento",
+      "link": "/marketing-imobiliario-lisboa"
+    },
+    "restaurants": {
+      "title": "Restaurantes",
+      "description": "Enche o seu restaurante com reservas todos os dias",
+      "link": "/marketing-restaurantes-lisboa"
+    },
+    "schools": {
+      "title": "Escolas & Cursos",
+      "description": "Capte mais pedidos de matrícula e informação",
+      "link": "/marketing-escolas-portugal"
+    },
+    "aesthetics": {
+      "title": "Estética & Bem-Estar",
+      "description": "Gere marcações para a sua clínica ou spa",
+      "link": "/marketing-estetica-lisboa"
+    },
+    "barbershops": {
+      "title": "Barbearias & Salões",
+      "description": "Mantenha a agenda cheia todos os dias",
+      "link": "/marketing-barbearias-lisboa"
+    },
+    "construction": {
+      "title": "Construção & Remodelação",
+      "description": "Receba pedidos de orçamento qualificados",
+      "link": "/marketing-construcao-lisboa"
+    }
+  },
+  "loading": {
+    "message": "A preparar a sua experiência..."
+  },
+  "home": {
+    "services_section": {
+      "title": "Serviços de Performance",
+      "subtitle": "Tudo o que precisa para gerar leads e vendas online",
+      "view_all": "Ver Todos os Serviços"
+    },
+    "niches_section": {
+      "title": "Especialistas em Negócios Locais",
+      "subtitle": "Estratégias personalizadas para cada sector",
+      "view_strategies": "Ver estratégias"
+    },
+    "social_proof": {
+      "title": "Empresas que Confiam",
+      "subtitle": "Trabalhamos com negócios de todos os tamanhos",
+      "view_cases": "Ver Casos de Sucesso"
+    },
+    "testimonials_section": {
+      "title": "O Que Dizem os Clientes",
+      "view_more": "Ver Mais Depoimentos"
+    },
+    "plans_section": {
+      "title": "Planos para Todos os Negócios",
+      "subtitle": "Desde presença digital até domínio local completo",
+      "view_pricing": "Ver Planos e Preços"
+    },
+    "faq": {
+      "title": "Perguntas Frequentes"
+    },
+    "final_cta": {
+      "title": "Pronto para Crescer?",
+      "subtitle": "Fale connosco hoje e descubra como podemos gerar mais leads e clientes para o seu negócio.",
+      "cta_primary": "Pedir Proposta Gratuita",
+      "cta_secondary": "Falar no WhatsApp"
+    }
+  },
+  "about": {
+    "title": "Sobre a HighLevelMKT",
+    "subtitle": "Somos especialistas em marketing de performance para negócios locais em Portugal. Trabalhamos com dados, testes e transparência total.",
+    "method_title": "O Nosso Método",
+    "values_title": "Os Nossos Valores",
+    "steps": {
+      "diagnosis": {
+        "title": "Diagnóstico",
+        "description": "Análise completa do seu negócio, concorrência e oportunidades."
+      },
+      "strategy": {
+        "title": "Estratégia",
+        "description": "Plano personalizado com objectivos claros e KPIs mensuráveis."
+      },
+      "execution": {
+        "title": "Execução",
+        "description": "Implementação das campanhas com setup profissional e tracking completo."
+      },
+      "optimization": {
+        "title": "Optimização",
+        "description": "Testes contínuos e ajustes baseados em dados reais."
+      },
+      "reporting": {
+        "title": "Relatórios",
+        "description": "Comunicação transparente com métricas que importam."
+      }
+    },
+    "values": {
+      "results": {
+        "title": "Foco em Resultados",
+        "description": "Métricas que importam: leads, vendas, ROI."
+      },
+      "speed": {
+        "title": "Velocidade",
+        "description": "Setup rápido, feedback constante, ajustes ágeis."
+      },
+      "transparency": {
+        "title": "Transparência",
+        "description": "Relatórios claros, sem \"marketing speak\"."
+      },
+      "improvement": {
+        "title": "Melhoria Contínua",
+        "description": "Testes A/B, optimização, crescimento."
+      }
+    }
+  },
+  "plans": {
+    "title": "Planos & Preços",
+    "subtitle": "Escolha o plano ideal para o seu negócio. Sem permanência. Cancele quando quiser.",
+    "recommended": "RECOMENDADO",
+    "choose_plan": "Escolher Plano",
+    "comparison_title": "Comparação Completa",
+    "faq_title": "Perguntas Frequentes"
+  },
+  "contact": {
+    "title": "Fale Connosco",
+    "subtitle": "Vamos conversar sobre como podemos ajudar o seu negócio",
+    "direct_contacts": "Contactos Directos",
+    "schedule": "Horário",
+    "schedule_text": "Segunda a Sexta: 09:00 - 18:00<br />Sábado e Domingo: Fechado",
+    "form": {
+      "name": "Nome",
+      "company": "Empresa",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "city": "Cidade",
+      "niche": "Nicho",
+      "goal": "Objectivo",
+      "goal_placeholder": "Ex: Gerar leads para imóveis em Lisboa",
+      "submit": "Enviar Pedido",
+      "required": "*"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Dicas, estratégias e insights sobre marketing digital",
+    "read_article": "Ler mais"
+  },
+  "results": {
+    "title": "Casos de Sucesso",
+    "subtitle": "Resultados reais de clientes que confiaram na HighLevelMKT",
+    "in_development": "Conteúdo em desenvolvimento. Entre em contacto para ver casos específicos do seu nicho."
+  },
+  "testimonials": {
+    "title": "Depoimentos",
+    "subtitle": "O que os nossos clientes dizem",
+    "in_development": "Conteúdo em desenvolvimento."
+  },
+  "footer": {
+    "tagline": "Agência de marketing digital focada em performance e resultados reais para negócios locais em Portugal.",
+    "company": "Empresa",
+    "resources": "Recursos",
+    "niches_title": "Nichos",
+    "copyright": "Todos os direitos reservados."
+  }
+}

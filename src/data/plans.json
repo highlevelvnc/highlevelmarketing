@@ -1,0 +1,130 @@
+{
+  "plans": [
+    {
+      "id": 1,
+      "name": "Presença Profissional",
+      "price": 250,
+      "currency": "€",
+      "period": "mês",
+      "description": "Ideal para negócios que querem começar com presença digital profissional",
+      "features": [
+        "Gestão de 2 redes sociais",
+        "8 posts por mês",
+        "Design de posts",
+        "Suporte via WhatsApp",
+        "Relatório mensal básico"
+      ],
+      "notIncluded": [
+        "Tráfego pago",
+        "Produção de vídeo",
+        "Landing pages"
+      ],
+      "recommended": false
+    },
+    {
+      "id": 2,
+      "name": "Leads & Movimento",
+      "price": 490,
+      "currency": "€",
+      "period": "mês",
+      "adBudgetNote": "Verba de anúncios à parte (mínimo 300€/mês)",
+      "description": "Para negócios que querem gerar leads qualificados com tráfego pago",
+      "features": [
+        "Gestão de Meta Ads ou Google Ads",
+        "Criação e teste de públicos",
+        "4 criativos por mês",
+        "Landing page básica incluída",
+        "Gestão de 2 redes sociais",
+        "12 posts por mês",
+        "Relatórios semanais",
+        "Suporte prioritário"
+      ],
+      "notIncluded": [
+        "SEO avançado",
+        "Automação de leads",
+        "Vídeos profissionais"
+      ],
+      "recommended": true
+    },
+    {
+      "id": 3,
+      "name": "Crescimento Local",
+      "price": 790,
+      "currency": "€",
+      "period": "mês",
+      "adBudgetNote": "Verba de anúncios à parte (mínimo 500€/mês)",
+      "description": "Solução completa para dominar o mercado local",
+      "features": [
+        "Meta Ads + Google Ads",
+        "SEO Local completo",
+        "Google My Business otimizado",
+        "8 criativos por mês",
+        "2 Landing pages",
+        "Gestão de 3 redes sociais",
+        "20 posts por mês",
+        "Automação básica de WhatsApp",
+        "Relatórios personalizados",
+        "Reuniões quinzenais",
+        "Suporte 24/7"
+      ],
+      "notIncluded": [],
+      "recommended": false
+    }
+  ],
+  "comparisonTable": [
+    {
+      "feature": "Redes Sociais",
+      "basic": "2",
+      "growth": "2",
+      "complete": "3"
+    },
+    {
+      "feature": "Posts/Mês",
+      "basic": "8",
+      "growth": "12",
+      "complete": "20"
+    },
+    {
+      "feature": "Tráfego Pago",
+      "basic": false,
+      "growth": "Meta ou Google",
+      "complete": "Meta + Google"
+    },
+    {
+      "feature": "Criativos/Mês",
+      "basic": "0",
+      "growth": "4",
+      "complete": "8"
+    },
+    {
+      "feature": "Landing Pages",
+      "basic": false,
+      "growth": "1 básica",
+      "complete": "2 completas"
+    },
+    {
+      "feature": "SEO Local",
+      "basic": false,
+      "growth": false,
+      "complete": true
+    },
+    {
+      "feature": "Automação WhatsApp",
+      "basic": false,
+      "growth": false,
+      "complete": true
+    },
+    {
+      "feature": "Relatórios",
+      "basic": "Mensal",
+      "growth": "Semanal",
+      "complete": "Personalizado"
+    },
+    {
+      "feature": "Suporte",
+      "basic": "WhatsApp",
+      "growth": "Prioritário",
+      "complete": "24/7"
+    }
+  ]
+}

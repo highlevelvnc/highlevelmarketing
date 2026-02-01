@@ -1,0 +1,125 @@
+{
+  "clients": [
+    {
+      "id": 1,
+      "name": "PortugalRur",
+      "niche": "real_estate",
+      "location": "Portugal"
+    },
+    {
+      "id": 2,
+      "name": "PataBrava",
+      "niche": "real_estate",
+      "location": "Portugal"
+    },
+    {
+      "id": 3,
+      "name": "Lúcia Canelas Imobiliária",
+      "niche": "real_estate",
+      "location": "Rio de Janeiro"
+    },
+    {
+      "id": 4,
+      "name": "Latina Grill",
+      "niche": "restaurant",
+      "location": "Cascais"
+    },
+    {
+      "id": 5,
+      "name": "Instituto Genária Viana",
+      "niche": "education",
+      "location": "Rio de Janeiro"
+    },
+    {
+      "id": 6,
+      "name": "Instituto Lessa Viana",
+      "niche": "education",
+      "location": "Rio de Janeiro"
+    },
+    {
+      "id": 7,
+      "name": "Escola Almeida Santos",
+      "niche": "education",
+      "location": "Rio de Janeiro"
+    },
+    {
+      "id": 8,
+      "name": "UNISUAM",
+      "niche": "education",
+      "location": "Brasil"
+    },
+    {
+      "id": 9,
+      "name": "Constroi.pt",
+      "niche": "construction",
+      "location": "Portugal"
+    },
+    {
+      "id": 10,
+      "name": "OT Remodelações",
+      "niche": "construction",
+      "location": "Portugal"
+    },
+    {
+      "id": 11,
+      "name": "Faunos Eméritos",
+      "niche": "construction",
+      "location": "Portugal"
+    },
+    {
+      "id": 12,
+      "name": "Violivê",
+      "niche": "other",
+      "location": "Búzios"
+    },
+    {
+      "id": 13,
+      "name": "Violivê Jukebox",
+      "niche": "other",
+      "location": "Búzios"
+    },
+    {
+      "id": 14,
+      "name": "Academia Marretão",
+      "niche": "other",
+      "location": "Rio de Janeiro"
+    },
+    {
+      "id": 15,
+      "name": "JetLifeRio",
+      "niche": "other",
+      "location": "Rio de Janeiro"
+    },
+    {
+      "id": 16,
+      "name": "Clínica Veterinária Palmeiras",
+      "niche": "other",
+      "location": "Rio de Janeiro"
+    }
+  ],
+  "kpis": {
+    "meta_ads_ctr": {
+      "min": 0.7,
+      "max": 1.5,
+      "unit": "%"
+    },
+    "conversion_rate": {
+      "min": 5,
+      "max": 15,
+      "unit": "%"
+    },
+    "cpl_by_niche": {
+      "real_estate": { "min": 10, "max": 30, "currency": "€" },
+      "restaurant": { "min": 2, "max": 7, "currency": "€" },
+      "education": { "min": 8, "max": 25, "currency": "€" },
+      "aesthetics": { "min": 6, "max": 20, "currency": "€" },
+      "barbershop": { "min": 2, "max": 6, "currency": "€" },
+      "construction": { "min": 12, "max": 40, "currency": "€" }
+    },
+    "timelines": {
+      "initial_data": "7-14 dias",
+      "optimization": "30-45 dias",
+      "consistency": "60-90 dias"
+    }
+  }
+}

@@ -1,0 +1,127 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-gray-800;
+  }
+  
+  body {
+    @apply bg-dark-bg text-white font-body antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-bold;
+  }
+}
+
+@layer components {
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .btn-primary {
+    @apply bg-orange-primary hover:bg-orange-hover text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-orange-glow inline-flex items-center gap-2;
+  }
+
+  .btn-secondary {
+    @apply border-2 border-orange-primary text-orange-primary hover:bg-orange-primary hover:text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 inline-flex items-center gap-2;
+  }
+
+  .card-tech {
+    @apply bg-dark-card border border-gray-800 rounded-2xl p-6 hover:border-orange-primary/50 transition-all duration-300 relative overflow-hidden;
+  }
+
+  .card-tech::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-br from-orange-primary/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-orange-primary to-orange-hover bg-clip-text text-transparent;
+  }
+
+  .glow-text {
+    text-shadow: 0 0 20px rgba(255, 122, 0, 0.5);
+  }
+
+  .tech-grid-bg {
+    background-image: 
+      linear-gradient(rgba(255, 122, 0, 0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 122, 0, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-dark-bg;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-orange-primary rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-orange-hover;
+}
+
+/* Loading animation */
+.loading-pulse {
+  animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+/* Canvas particle background */
+#particles-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Selection */
+::selection {
+  @apply bg-orange-primary text-white;
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus styles */
+:focus-visible {
+  @apply outline-2 outline-offset-2 outline-orange-primary;
+}

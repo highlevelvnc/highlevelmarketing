@@ -1,0 +1,250 @@
+{
+  "common": {
+    "cta_primary": "Request Proposal",
+    "cta_whatsapp": "Chat on WhatsApp",
+    "cta_contact": "Get in Touch",
+    "learn_more": "Learn More",
+    "see_plans": "See Plans",
+    "see_results": "See Results",
+    "read_more": "Read More",
+    "view_all": "View All",
+    "close": "Close",
+    "loading": "Loading...",
+    "language": "Language"
+  },
+  "nav": {
+    "home": "Home",
+    "services": "Services",
+    "about": "About",
+    "plans": "Plans",
+    "results": "Results",
+    "testimonials": "Testimonials",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "hero": {
+    "headline": "More Leads, More Clients, More Results",
+    "subheadline_1": "For Your Business in Portugal",
+    "description": "We transform your digital marketing investment into real, measurable results. Experts in paid traffic, social media and conversion for local businesses in Lisbon, Cascais and Oeiras.",
+    "trust_line": "We work with real data, realistic timelines and total transparency.",
+    "stats": {
+      "clients": "Active Clients",
+      "campaigns": "Campaigns Managed",
+      "investment": "Investment Managed",
+      "ctr": "Average CTR"
+    }
+  },
+  "services": {
+    "title": "Performance Services",
+    "subtitle": "Everything you need to generate leads and sales online",
+    "paid_traffic": {
+      "title": "Paid Traffic",
+      "description": "Meta Ads and Google Ads optimized for conversion. Daily monitoring, A/B testing and continuous optimization to maximize ROI.",
+      "for_who": "For those who want fast and scalable results",
+      "deliverables": ["Optimized campaigns", "Weekly reports", "Audience testing", "Conversion analysis"]
+    },
+    "social_media": {
+      "title": "Social Media Management",
+      "description": "Strategy, content creation and community management for Instagram, Facebook and LinkedIn.",
+      "for_who": "For brands that want relevant presence",
+      "deliverables": ["Editorial calendar", "Creative posts", "Engagement", "Monthly reports"]
+    },
+    "content": {
+      "title": "Content Production",
+      "description": "Professional texts, images and videos that convert visitors into customers.",
+      "for_who": "For businesses that need quality materials",
+      "deliverables": ["Persuasive copywriting", "Graphic design", "Video editing", "Image bank"]
+    },
+    "creatives": {
+      "title": "Ad Creatives",
+      "description": "Tested and validated ad designs for Meta Ads and Google Ads.",
+      "for_who": "For high-impact campaigns",
+      "deliverables": ["Banners", "Stories", "Short videos", "Carousels"]
+    },
+    "websites": {
+      "title": "Websites & Landing Pages",
+      "description": "Fast, responsive and conversion-optimized websites.",
+      "for_who": "For businesses that want to sell online",
+      "deliverables": ["Modern design", "Mobile-first", "Technical SEO", "Integrated forms"]
+    },
+    "seo": {
+      "title": "Local SEO",
+      "description": "Optimization to appear in local Google searches.",
+      "for_who": "For businesses that depend on local customers",
+      "deliverables": ["Google My Business", "Local keywords", "Citations", "Reviews management"]
+    },
+    "automation": {
+      "title": "Lead Automation",
+      "description": "WhatsApp integration for quick response and automatic qualification.",
+      "for_who": "For teams that want efficiency",
+      "deliverables": ["Automatic flows", "Lead qualification", "Basic CRM", "Notifications"]
+    }
+  },
+  "niches": {
+    "title": "Local Business Specialists",
+    "subtitle": "Personalized strategies for each sector",
+    "real_estate": {
+      "title": "Real Estate",
+      "description": "Generate qualified leads for buying, selling and renting",
+      "link": "/marketing-imobiliario-lisboa"
+    },
+    "restaurants": {
+      "title": "Restaurants",
+      "description": "Fill your restaurant with reservations every day",
+      "link": "/marketing-restaurantes-lisboa"
+    },
+    "schools": {
+      "title": "Schools & Courses",
+      "description": "Capture more enrollment and information requests",
+      "link": "/marketing-escolas-portugal"
+    },
+    "aesthetics": {
+      "title": "Aesthetics & Wellness",
+      "description": "Generate appointments for your clinic or spa",
+      "link": "/marketing-estetica-lisboa"
+    },
+    "barbershops": {
+      "title": "Barbershops & Salons",
+      "description": "Keep your schedule full every day",
+      "link": "/marketing-barbearias-lisboa"
+    },
+    "construction": {
+      "title": "Construction & Remodeling",
+      "description": "Receive qualified quote requests",
+      "link": "/marketing-construcao-lisboa"
+    }
+  },
+  "loading": {
+    "message": "Preparing your experience..."
+  },
+  "home": {
+    "services_section": {
+      "title": "Performance Services",
+      "subtitle": "Everything you need to generate leads and sales online",
+      "view_all": "View All Services"
+    },
+    "niches_section": {
+      "title": "Local Business Specialists",
+      "subtitle": "Personalized strategies for each sector",
+      "view_strategies": "View strategies"
+    },
+    "social_proof": {
+      "title": "Trusted Companies",
+      "subtitle": "We work with businesses of all sizes",
+      "view_cases": "View Success Cases"
+    },
+    "testimonials_section": {
+      "title": "What Clients Say",
+      "view_more": "View More Testimonials"
+    },
+    "plans_section": {
+      "title": "Plans for All Businesses",
+      "subtitle": "From digital presence to complete local dominance",
+      "view_pricing": "View Plans and Pricing"
+    },
+    "faq": {
+      "title": "Frequently Asked Questions"
+    },
+    "final_cta": {
+      "title": "Ready to Grow?",
+      "subtitle": "Talk to us today and discover how we can generate more leads and clients for your business.",
+      "cta_primary": "Request Free Proposal",
+      "cta_secondary": "Chat on WhatsApp"
+    }
+  },
+  "about": {
+    "title": "About HighLevelMKT",
+    "subtitle": "We are performance marketing specialists for local businesses in Portugal. We work with data, testing and total transparency.",
+    "method_title": "Our Method",
+    "values_title": "Our Values",
+    "steps": {
+      "diagnosis": {
+        "title": "Diagnosis",
+        "description": "Complete analysis of your business, competition and opportunities."
+      },
+      "strategy": {
+        "title": "Strategy",
+        "description": "Personalized plan with clear objectives and measurable KPIs."
+      },
+      "execution": {
+        "title": "Execution",
+        "description": "Campaign implementation with professional setup and complete tracking."
+      },
+      "optimization": {
+        "title": "Optimization",
+        "description": "Continuous testing and adjustments based on real data."
+      },
+      "reporting": {
+        "title": "Reports",
+        "description": "Transparent communication with metrics that matter."
+      }
+    },
+    "values": {
+      "results": {
+        "title": "Results Focus",
+        "description": "Metrics that matter: leads, sales, ROI."
+      },
+      "speed": {
+        "title": "Speed",
+        "description": "Quick setup, constant feedback, agile adjustments."
+      },
+      "transparency": {
+        "title": "Transparency",
+        "description": "Clear reports, no marketing speak."
+      },
+      "improvement": {
+        "title": "Continuous Improvement",
+        "description": "A/B testing, optimization, growth."
+      }
+    }
+  },
+  "plans": {
+    "title": "Plans & Pricing",
+    "subtitle": "Choose the ideal plan for your business. No commitment. Cancel anytime.",
+    "recommended": "RECOMMENDED",
+    "choose_plan": "Choose Plan",
+    "comparison_title": "Full Comparison",
+    "faq_title": "Frequently Asked Questions"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Let's talk about how we can help your business",
+    "direct_contacts": "Direct Contacts",
+    "schedule": "Schedule",
+    "schedule_text": "Monday to Friday: 09:00 - 18:00<br />Saturday and Sunday: Closed",
+    "form": {
+      "name": "Name",
+      "company": "Company",
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "city": "City",
+      "niche": "Niche",
+      "goal": "Goal",
+      "goal_placeholder": "E.g.: Generate leads for properties in Lisbon",
+      "submit": "Submit Request",
+      "required": "*"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "subtitle": "Tips, strategies and insights about digital marketing",
+    "read_article": "Read more"
+  },
+  "results": {
+    "title": "Success Cases",
+    "subtitle": "Real results from clients who trusted HighLevelMKT",
+    "in_development": "Content under development. Contact us to see specific cases for your niche."
+  },
+  "testimonials": {
+    "title": "Testimonials",
+    "subtitle": "What our clients say",
+    "in_development": "Content under development."
+  },
+  "footer": {
+    "tagline": "Digital marketing agency focused on performance and real results for local businesses in Portugal.",
+    "company": "Company",
+    "resources": "Resources",
+    "niches_title": "Niches",
+    "copyright": "All rights reserved."
+  }
+}
