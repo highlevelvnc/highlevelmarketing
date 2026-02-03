@@ -1,73 +1,164 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset 
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- Página principal -->
   <url>
-    <loc>https://highlevelmkt.com/</loc>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
+    <loc>https://www.highlevelmkt.com/</loc>
+    <priority>1.00</priority>
   </url>
+
+  <!-- Páginas institucionais -->
   <url>
-    <loc>https://highlevelmkt.com/servicos</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.highlevelmkt.com/servicos</loc>
+    <priority>0.90</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/sobre</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.highlevelmkt.com/planos</loc>
+    <priority>0.85</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/planos</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.highlevelmkt.com/resultados</loc>
+    <priority>0.85</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/resultados</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.highlevelmkt.com/contacto</loc>
+    <priority>0.80</priority>
   </url>
+
+  <!-- Blog -->
   <url>
-    <loc>https://highlevelmkt.com/depoimentos</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
+    <loc>https://www.highlevelmkt.com/blog</loc>
+    <priority>0.90</priority>
   </url>
+
+  <!-- Artigos do Blog -->
   <url>
-    <loc>https://highlevelmkt.com/blog</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://www.highlevelmkt.com/blog/marketing-digital-lisboa-2026</loc>
+    <priority>0.75</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/contacto</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.highlevelmkt.com/blog/trafego-pago-portugal-2026</loc>
+    <priority>0.75</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/marketing-imobiliario-lisboa</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.highlevelmkt.com/blog/meta-ads-vs-google-ads-portugal</loc>
+    <priority>0.75</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/marketing-restaurantes-lisboa</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.highlevelmkt.com/blog/gerar-leads-qualificados-portugal</loc>
+    <priority>0.75</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/marketing-escolas-portugal</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.highlevelmkt.com/blog/landing-pages-que-convertem</loc>
+    <priority>0.75</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/marketing-estetica-lisboa</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.highlevelmkt.com/blog/erros-comuns-anuncios-locais</loc>
+    <priority>0.70</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/marketing-barbearias-lisboa</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.highlevelmkt.com/blog/seo-local-lisboa-2026</loc>
+    <priority>0.75</priority>
   </url>
+
   <url>
-    <loc>https://highlevelmkt.com/marketing-construcao-lisboa</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
+    <loc>https://www.highlevelmkt.com/blog/custo-por-lead-portugal-2026</loc>
+    <priority>0.75</priority>
   </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/marketing-imobiliario-lisboa</loc>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/aumentar-reservas-restaurante</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/roi-marketing-digital-calcular</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/instagram-negocios-locais-2026</loc>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/google-my-business-otimizar</loc>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/whatsapp-business-leads</loc>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/budget-marketing-digital-2026</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/remarketing-estrategias-2026</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/email-marketing-portugal-2026</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/criativos-anuncios-meta-ads</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/tendencias-marketing-digital-2026</loc>
+    <priority>0.75</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/copywriting-anuncios-portugal</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/marketing-estetica-lisboa</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/linkedin-ads-b2b-portugal</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/video-marketing-pequenos-negocios</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/marketing-construcao-portugal</loc>
+    <priority>0.70</priority>
+  </url>
+
+  <url>
+    <loc>https://www.highlevelmkt.com/blog/chatbots-atendimento-automatico</loc>
+    <priority>0.70</priority>
+  </url>
+
 </urlset>
