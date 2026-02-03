@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://highlevelmkt.com/sitemap.xml
+Sitemap: https://www.highlevelmkt.com/sitemap.xml
