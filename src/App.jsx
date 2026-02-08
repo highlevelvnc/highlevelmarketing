@@ -9,7 +9,7 @@ import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import ParticleBackground from './components/ParticleBackground';
 
-// ✅ VOLTA: Home com lazy (reduz bundle inicial -> melhora TBT no mobile)
+// Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
 const Services = lazy(() => import('./pages/Services'));
 const About = lazy(() => import('./pages/About'));
@@ -21,7 +21,7 @@ const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NicheLanding = lazy(() => import('./pages/NicheLanding'));
 
-// ✅ Fallback leve (não ocupa tela toda)
+// Fallback leve (não ocupa tela toda)
 const PageLoader = () => (
   <div className="px-6 pt-24 pb-10">
     <div className="h-9 w-3/4 rounded bg-white/10 animate-pulse" />
@@ -45,31 +45,41 @@ function AppShell() {
 
   const [showOverlay, setShowOverlay] = useState(false);
 
-  // ✅ Carregar “enfeites” depois (não mexe no LCP e reduz carga inicial)
+  // Carregar “enfeites” depois (reduz carga inicial no mobile)
   const [deferredUI, setDeferredUI] = useState(false);
   useEffect(() => {
     const t = setTimeout(() => setDeferredUI(true), 1800);
     return () => clearTimeout(t);
   }, []);
 
+  // Detectar mobile de forma simples
+  const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
+    const check = () => setIsMobile(window.matchMedia('(max-width: 768px)').matches);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  useEffect(() => {
+    // NÃO mostrar overlay na Home (melhora SEO/performance)
     if (isHome) {
       setShowOverlay(false);
       return;
     }
+    // Se não quiser overlay em internas, comente a linha abaixo:
     setShowOverlay(true);
   }, [isHome, location.pathname]);
 
   return (
     <div className="relative min-h-screen bg-dark-bg text-white">
-      {/* ✅ IMPORTANTE: deve ser fixed/absolute lá dentro para NÃO causar CLS */}
-      {deferredUI && <ParticleBackground />}
+      {/* ✅ Partículas só no desktop (mobile fica mais leve) */}
+      {deferredUI && !isMobile && <ParticleBackground />}
 
       <Header />
 
       <main className="relative z-10">
         <Suspense fallback={<PageLoader />}>
-          {/* ✅ Removi AnimatePresence (framer) para reduzir TBT no mobile */}
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
             <Route path="/servicos" element={<Services />} />
@@ -81,6 +91,7 @@ function AppShell() {
             <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/contacto" element={<Contact />} />
 
+            {/* Niche landing pages */}
             <Route path="/marketing-imobiliario-lisboa" element={<NicheLanding niche="real_estate" />} />
             <Route path="/marketing-restaurantes-lisboa" element={<NicheLanding niche="restaurant" />} />
             <Route path="/marketing-escolas-portugal" element={<NicheLanding niche="education" />} />
@@ -93,7 +104,7 @@ function AppShell() {
 
       <Footer />
 
-      {/* ✅ Deve ser FIXED no componente para não dar CLS */}
+      {/* ✅ WhatsApp aparece depois (e não atrapalha o primeiro paint) */}
       {deferredUI && <WhatsAppButton />}
 
       <LoadingOverlay enabled={showOverlay} onClose={() => setShowOverlay(false)} />
