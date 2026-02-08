@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -54,6 +53,28 @@
       linear-gradient(90deg, rgba(255, 122, 0, 0.03) 1px, transparent 1px);
     background-size: 40px 40px;
   }
+}
+
+/* ✅ Evita CLS por aparecer/desaparecer scrollbar no desktop */
+html {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
+/* ✅ TRAVA o header para não mudar altura no load (MAIOR ganho no CLS desktop) */
+header {
+  min-height: 80px;
+}
+
+/* ✅ Evita “pulos” de mídia (imagens/iframes) e melhora layout stability */
+img,
+svg,
+video,
+canvas,
+iframe {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
 /* Custom scrollbar */
@@ -114,13 +135,6 @@
 ::selection {
   @apply bg-orange-primary text-white;
 }
-
-/* Smooth scroll */
-html {
-  scroll-behavior: smooth;
-  scrollbar-gutter: stable;
-}
-
 
 /* Focus styles */
 :focus-visible {
