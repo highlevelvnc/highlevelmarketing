@@ -10,8 +10,10 @@ import Footer from './components/Footer';
 import WhatsAppButton from './components/WhatsAppButton';
 import ParticleBackground from './components/ParticleBackground';
 
-// Lazy load pages
-const Home = lazy(() => import('./pages/Home'));
+// ✅ Home SEM lazy (melhora MUITO o mobile)
+import Home from './pages/Home';
+
+// Lazy load pages (mantém nas internas)
 const Services = lazy(() => import('./pages/Services'));
 const About = lazy(() => import('./pages/About'));
 const Plans = lazy(() => import('./pages/Plans'));
@@ -22,17 +24,18 @@ const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NicheLanding = lazy(() => import('./pages/NicheLanding'));
 
-// Page loader (fallback do Suspense)
+// ✅ Fallback leve (não tela cheia) — evita virar “LCP”
 const PageLoader = () => (
-  <div className="min-h-screen flex items-center justify-center">
-    <div className="loading-pulse text-orange-primary text-2xl font-display">Carregando...</div>
+  <div className="px-6 pt-24 pb-10">
+    <div className="h-9 w-3/4 rounded bg-white/10 animate-pulse" />
+    <div className="mt-4 h-5 w-2/3 rounded bg-white/10 animate-pulse" />
+    <div className="mt-6 h-11 w-40 rounded bg-white/10 animate-pulse" />
   </div>
 );
 
 /**
- * Mostra um overlay de loading SEM bloquear o render inicial (não mata LCP).
+ * Overlay de loading SEM bloquear o render inicial.
  * - Na Home ("/") a gente NÃO mostra overlay pra SEO/performance.
- * - Em páginas internas, pode mostrar se quiser.
  */
 function LoadingOverlay({ enabled, onClose }) {
   if (!enabled) return null;
@@ -51,6 +54,14 @@ function AppShell() {
   // Overlay opcional (não bloqueia o render)
   const [showOverlay, setShowOverlay] = useState(false);
 
+  // ✅ Adiado: partículas + WhatsApp (não competem com o primeiro paint)
+  const [deferredUI, setDeferredUI] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setDeferredUI(true), 1500);
+    return () => clearTimeout(t);
+  }, []);
+
   useEffect(() => {
     // ✅ Importante: NÃO mostrar loader na Home (melhora LCP)
     if (isHome) {
@@ -58,20 +69,21 @@ function AppShell() {
       return;
     }
 
-    // Em rotas internas, você pode manter uma “sensação premium”
-    // e ainda assim não ferrar o LCP da Home.
-    // Se não quiser em internas também, basta comentar as 2 linhas abaixo.
+    // Se quiser, mantenha overlay nas internas (ou comente a linha abaixo para desligar geral)
     setShowOverlay(true);
   }, [isHome, location.pathname]);
 
   return (
     <div className="relative min-h-screen bg-dark-bg text-white">
-      <ParticleBackground />
+      {/* ✅ Só aparece depois de 1.5s */}
+      {deferredUI && <ParticleBackground />}
+
       <Header />
 
       <main className="relative z-10">
         <Suspense fallback={<PageLoader />}>
-          <AnimatePresence mode="wait">
+          {/* ✅ Evita “segurar” render inicial */}
+          <AnimatePresence initial={false}>
             <Routes location={location} key={location.pathname}>
               <Route path="/" element={<Home />} />
               <Route path="/servicos" element={<Services />} />
@@ -96,7 +108,9 @@ function AppShell() {
       </main>
 
       <Footer />
-      <WhatsAppButton />
+
+      {/* ✅ Só aparece depois de 1.5s */}
+      {deferredUI && <WhatsAppButton />}
 
       {/* Overlay só em páginas internas (e não bloqueia o render da Home) */}
       <LoadingOverlay enabled={showOverlay} onClose={() => setShowOverlay(false)} />
