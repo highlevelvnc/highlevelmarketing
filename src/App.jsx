@@ -1,5 +1,5 @@
 import { useState, useEffect, Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import './i18n';
 import './styles/index.css';
@@ -22,66 +22,92 @@ const BlogPost = lazy(() => import('./pages/BlogPost'));
 const Contact = lazy(() => import('./pages/Contact'));
 const NicheLanding = lazy(() => import('./pages/NicheLanding'));
 
-// Page loader
+// Page loader (fallback do Suspense)
 const PageLoader = () => (
   <div className="min-h-screen flex items-center justify-center">
     <div className="loading-pulse text-orange-primary text-2xl font-display">Carregando...</div>
   </div>
 );
 
-function App() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate initial load
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) {
-    return <LoadingScreen onLoadingComplete={() => setIsLoading(false)} />;
-  }
+/**
+ * Mostra um overlay de loading SEM bloquear o render inicial (não mata LCP).
+ * - Na Home ("/") a gente NÃO mostra overlay pra SEO/performance.
+ * - Em páginas internas, pode mostrar se quiser.
+ */
+function LoadingOverlay({ enabled, onClose }) {
+  if (!enabled) return null;
 
   return (
-    <Router>
-      <div className="relative min-h-screen bg-dark-bg text-white">
-        <ParticleBackground />
-        <Header />
-        
-        <main className="relative z-10">
-          <Suspense fallback={<PageLoader />}>
-            <AnimatePresence mode="wait">
-              <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/servicos" element={<Services />} />
-                <Route path="/sobre" element={<About />} />
-                <Route path="/planos" element={<Plans />} />
-                <Route path="/resultados" element={<Results />} />
-                <Route path="/depoimentos" element={<Testimonials />} />
-                <Route path="/blog" element={<Blog />} />
-                <Route path="/blog/:slug" element={<BlogPost />} />
-                <Route path="/contacto" element={<Contact />} />
-                
-                {/* Niche landing pages */}
-                <Route path="/marketing-imobiliario-lisboa" element={<NicheLanding niche="real_estate" />} />
-                <Route path="/marketing-restaurantes-lisboa" element={<NicheLanding niche="restaurant" />} />
-                <Route path="/marketing-escolas-portugal" element={<NicheLanding niche="education" />} />
-                <Route path="/marketing-estetica-lisboa" element={<NicheLanding niche="aesthetics" />} />
-                <Route path="/marketing-barbearias-lisboa" element={<NicheLanding niche="barbershop" />} />
-                <Route path="/marketing-construcao-lisboa" element={<NicheLanding niche="construction" />} />
-              </Routes>
-            </AnimatePresence>
-          </Suspense>
-        </main>
-
-        <Footer />
-        <WhatsAppButton />
-      </div>
-    </Router>
+    <div className="fixed inset-0 z-[9999]">
+      <LoadingScreen onLoadingComplete={onClose} />
+    </div>
   );
 }
 
-export default App;
+function AppShell() {
+  const location = useLocation();
+  const isHome = location.pathname === '/';
+
+  // Overlay opcional (não bloqueia o render)
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  useEffect(() => {
+    // ✅ Importante: NÃO mostrar loader na Home (melhora LCP)
+    if (isHome) {
+      setShowOverlay(false);
+      return;
+    }
+
+    // Em rotas internas, você pode manter uma “sensação premium”
+    // e ainda assim não ferrar o LCP da Home.
+    // Se não quiser em internas também, basta comentar as 2 linhas abaixo.
+    setShowOverlay(true);
+  }, [isHome, location.pathname]);
+
+  return (
+    <div className="relative min-h-screen bg-dark-bg text-white">
+      <ParticleBackground />
+      <Header />
+
+      <main className="relative z-10">
+        <Suspense fallback={<PageLoader />}>
+          <AnimatePresence mode="wait">
+            <Routes location={location} key={location.pathname}>
+              <Route path="/" element={<Home />} />
+              <Route path="/servicos" element={<Services />} />
+              <Route path="/sobre" element={<About />} />
+              <Route path="/planos" element={<Plans />} />
+              <Route path="/resultados" element={<Results />} />
+              <Route path="/depoimentos" element={<Testimonials />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
+              <Route path="/contacto" element={<Contact />} />
+
+              {/* Niche landing pages */}
+              <Route path="/marketing-imobiliario-lisboa" element={<NicheLanding niche="real_estate" />} />
+              <Route path="/marketing-restaurantes-lisboa" element={<NicheLanding niche="restaurant" />} />
+              <Route path="/marketing-escolas-portugal" element={<NicheLanding niche="education" />} />
+              <Route path="/marketing-estetica-lisboa" element={<NicheLanding niche="aesthetics" />} />
+              <Route path="/marketing-barbearias-lisboa" element={<NicheLanding niche="barbershop" />} />
+              <Route path="/marketing-construcao-lisboa" element={<NicheLanding niche="construction" />} />
+            </Routes>
+          </AnimatePresence>
+        </Suspense>
+      </main>
+
+      <Footer />
+      <WhatsAppButton />
+
+      {/* Overlay só em páginas internas (e não bloqueia o render da Home) */}
+      <LoadingOverlay enabled={showOverlay} onClose={() => setShowOverlay(false)} />
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <Router>
+      <AppShell />
+    </Router>
+  );
+}
