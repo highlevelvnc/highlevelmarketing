@@ -4,21 +4,38 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    
+
+    <!-- ✅ Preconnect / DNS Prefetch (melhora mobile) -->
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://www.google-analytics.com" />
+    <link rel="preconnect" href="https://connect.facebook.net" />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+    <link rel="dns-prefetch" href="https://www.google-analytics.com" />
+    <link rel="dns-prefetch" href="https://connect.facebook.net" />
+
     <!-- Primary Meta Tags -->
-    <title>HighLevelMKT - Marketing Digital & Tráfego Pago em Lisboa | Agência de Performance</title>
-    <meta name="title" content="HighLevelMKT - Marketing Digital & Tráfego Pago em Lisboa | Agência de Performance" />
-    <meta name="description" content="Agência especializada em tráfego pago, Meta Ads, Google Ads e geração de leads para negócios locais em Lisboa, Cascais e Oeiras. Resultados reais e mensuráveis." />
-    <meta name="keywords" content="marketing digital Lisboa, tráfego pago Portugal, Meta Ads Portugal, Google Ads Portugal, agência marketing Lisboa, geração leads Portugal" />
+    <title>Agência de Marketing e Publicidade em Portugal | HighLevelMKT</title>
+    <meta name="title" content="Agência de Marketing e Publicidade em Portugal | HighLevelMKT" />
+    <meta
+      name="description"
+      content="Agência de marketing e publicidade em Portugal. Tráfego pago, Google Ads, Meta Ads e SEO para gerar mais clientes. Atendemos Lisboa, Cascais e todo o país."
+    />
+    <meta
+      name="keywords"
+      content="agência de marketing Portugal, agência de publicidade Portugal, marketing digital Portugal, marketing digital Lisboa, tráfego pago Portugal, Meta Ads Portugal, Google Ads Portugal, SEO Portugal, agência marketing Lisboa"
+    />
     <meta name="author" content="HighLevelMKT" />
     <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="https://highlevelmkt.com" />
+    <link rel="canonical" href="https://highlevelmkt.com/" />
 
-    <!-- Open Graph / Facebook -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://highlevelmkt.com/" />
-    <meta property="og:title" content="HighLevelMKT - Marketing Digital & Tráfego Pago em Lisboa" />
-    <meta property="og:description" content="Agência especializada em tráfego pago, Meta Ads, Google Ads e geração de leads para negócios locais em Portugal." />
+    <meta property="og:title" content="Agência de Marketing e Publicidade em Portugal | HighLevelMKT" />
+    <meta
+      property="og:description"
+      content="Agência de marketing e publicidade em Portugal. Tráfego pago, Google Ads, Meta Ads e SEO para gerar mais clientes."
+    />
     <meta property="og:image" content="https://highlevelmkt.com/og-image.jpg" />
     <meta property="og:locale" content="pt_PT" />
     <meta property="og:locale:alternate" content="en_US" />
@@ -26,73 +43,109 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://highlevelmkt.com/" />
-    <meta property="twitter:title" content="HighLevelMKT - Marketing Digital & Tráfego Pago em Lisboa" />
-    <meta property="twitter:description" content="Agência especializada em tráfego pago, Meta Ads, Google Ads e geração de leads para negócios locais em Portugal." />
+    <meta property="twitter:title" content="Agência de Marketing e Publicidade em Portugal | HighLevelMKT" />
+    <meta
+      property="twitter:description"
+      content="Agência de marketing e publicidade em Portugal. Tráfego pago, Google Ads, Meta Ads e SEO para gerar mais clientes."
+    />
     <meta property="twitter:image" content="https://highlevelmkt.com/og-image.jpg" />
 
-    <!-- Schema.org LocalBusiness -->
+    <!-- Schema.org - ProfessionalService -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "HighLevelMKT",
-      "description": "Agência de marketing digital especializada em performance e tráfego pago para negócios locais",
-      "url": "https://highlevelmkt.com",
-      "telephone": "+351934071660",
-      "email": "contato@highlevelmkt.com",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Lisboa",
-        "addressRegion": "Lisboa",
-        "addressCountry": "PT"
-      },
-      "areaServed": ["Lisboa", "Cascais", "Oeiras", "Portugal"],
-      "priceRange": "€€",
-      "openingHours": "Mo-Fr 09:00-18:00",
-      "sameAs": [
-        "https://linkedin.com/company/highlevelmkt",
-        "https://instagram.com/highlevelmkt",
-        "https://facebook.com/highlevelmkt"
-      ]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "ProfessionalService",
+        "name": "HighLevelMKT",
+        "description": "Agência de marketing e publicidade especializada em performance, tráfego pago e geração de clientes em Portugal.",
+        "url": "https://highlevelmkt.com/",
+        "telephone": "+351934071660",
+        "email": "contato@highlevelmkt.com",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Lisboa",
+          "addressRegion": "Lisboa",
+          "addressCountry": "PT"
+        },
+        "areaServed": {
+          "@type": "Country",
+          "name": "Portugal"
+        },
+        "priceRange": "€€",
+        "openingHours": "Mo-Fr 09:00-18:00",
+        "sameAs": [
+          "https://linkedin.com/company/highlevelmkt",
+          "https://instagram.com/highlevelmkt",
+          "https://facebook.com/highlevelmkt"
+        ]
+      }
     </script>
-
-    <!-- ✅ ADICIONADO: Google tag (GT-NMDNDC9Q) + GA4 (G-YQCBN4SH2K) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GT-NMDNDC9Q"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'GT-NMDNDC9Q');
-      gtag('config', 'G-YQCBN4SH2K', { anonymize_ip: true });
-    </script>
-
-    <!-- ✅ ADICIONADO: Meta Pixel (4331967567089383) -->
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      fbq('init', '4331967567089383');
-      fbq('track', 'PageView');
-    </script>
-
   </head>
-  <body>
 
-    <!-- ✅ ADICIONADO: Meta Pixel (noscript) -->
+  <body>
+    <!-- Meta Pixel (noscript) -->
     <noscript>
-      <img height="1" width="1" style="display:none"
+      <img
+        height="1"
+        width="1"
+        style="display:none"
         src="https://www.facebook.com/tr?id=4331967567089383&ev=PageView&noscript=1"
       />
     </noscript>
 
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- ✅ Tracking carregando APÓS o load (protege LCP/FCP no mobile) -->
+    <script>
+      window.addEventListener("load", function () {
+        function loadTracking() {
+          // Google Tag / GA4
+          var gtagScript = document.createElement("script");
+          gtagScript.async = true;
+          gtagScript.src =
+            "https://www.googletagmanager.com/gtag/js?id=GT-NMDNDC9Q";
+          document.head.appendChild(gtagScript);
+
+          window.dataLayer = window.dataLayer || [];
+          function gtag() {
+            dataLayer.push(arguments);
+          }
+          window.gtag = gtag;
+
+          gtag("js", new Date());
+          gtag("config", "GT-NMDNDC9Q");
+          gtag("config", "G-YQCBN4SH2K", { anonymize_ip: true });
+
+          // Meta Pixel
+          !(function (f, b, e, v, n, t, s) {
+            if (f.fbq) return;
+            n = f.fbq = function () {
+              n.callMethod
+                ? n.callMethod.apply(n, arguments)
+                : n.queue.push(arguments);
+            };
+            if (!f._fbq) f._fbq = n;
+            n.push = n;
+            n.loaded = true;
+            n.version = "2.0";
+            n.queue = [];
+            t = b.createElement(e);
+            t.async = true;
+            t.src = v;
+            s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s);
+          })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+
+          fbq("init", "4331967567089383");
+          fbq("track", "PageView");
+        }
+
+        if ("requestIdleCallback" in window) {
+          requestIdleCallback(loadTracking, { timeout: 2000 });
+        } else {
+          setTimeout(loadTracking, 1500);
+        }
+      });
+    </script>
   </body>
 </html>
