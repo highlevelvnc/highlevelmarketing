@@ -2,8 +2,20 @@
 <html lang="pt-PT">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Viewport -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- ✅ Google Fonts (SEM CLS / SEM @import) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- ✅ Preconnect / DNS Prefetch (melhora mobile) -->
     <link rel="preconnect" href="https://www.googletagmanager.com" />
@@ -15,14 +27,17 @@
 
     <!-- Primary Meta Tags -->
     <title>Agência de Marketing e Publicidade em Portugal | HighLevelMKT</title>
-    <meta name="title" content="Agência de Marketing e Publicidade em Portugal | HighLevelMKT" />
+    <meta
+      name="title"
+      content="Agência de Marketing e Publicidade em Portugal | HighLevelMKT"
+    />
     <meta
       name="description"
       content="Agência de marketing e publicidade em Portugal. Tráfego pago, Google Ads, Meta Ads e SEO para gerar mais clientes. Atendemos Lisboa, Cascais e todo o país."
     />
     <meta
       name="keywords"
-      content="agência de marketing Portugal, agência de publicidade Portugal, marketing digital Portugal, marketing digital Lisboa, tráfego pago Portugal, Meta Ads Portugal, Google Ads Portugal, SEO Portugal, agência marketing Lisboa"
+      content="agência de marketing Portugal, agência de publicidade Portugal, marketing digital Portugal, marketing digital Lisboa, tráfego pago Portugal, Meta Ads Portugal, Google Ads Portugal, SEO Portugal"
     />
     <meta name="author" content="HighLevelMKT" />
     <meta name="robots" content="index, follow" />
@@ -31,7 +46,10 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://highlevelmkt.com/" />
-    <meta property="og:title" content="Agência de Marketing e Publicidade em Portugal | HighLevelMKT" />
+    <meta
+      property="og:title"
+      content="Agência de Marketing e Publicidade em Portugal | HighLevelMKT"
+    />
     <meta
       property="og:description"
       content="Agência de marketing e publicidade em Portugal. Tráfego pago, Google Ads, Meta Ads e SEO para gerar mais clientes."
@@ -43,7 +61,10 @@
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://highlevelmkt.com/" />
-    <meta property="twitter:title" content="Agência de Marketing e Publicidade em Portugal | HighLevelMKT" />
+    <meta
+      property="twitter:title"
+      content="Agência de Marketing e Publicidade em Portugal | HighLevelMKT"
+    />
     <meta
       property="twitter:description"
       content="Agência de marketing e publicidade em Portugal. Tráfego pago, Google Ads, Meta Ads e SEO para gerar mais clientes."
@@ -93,9 +114,11 @@
     </noscript>
 
     <div id="root"></div>
+
+    <!-- App -->
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- ✅ Tracking carregando APÓS o load (protege LCP/FCP no mobile) -->
+    <!-- ✅ Tracking carregando APÓS o load (protege LCP/FCP/CLS) -->
     <script>
       window.addEventListener("load", function () {
         function loadTracking() {
@@ -134,7 +157,12 @@
             t.src = v;
             s = b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t, s);
-          })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+          })(
+            window,
+            document,
+            "script",
+            "https://connect.facebook.net/en_US/fbevents.js"
+          );
 
           fbq("init", "4331967567089383");
           fbq("track", "PageView");
