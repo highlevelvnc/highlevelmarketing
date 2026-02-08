@@ -118,7 +118,9 @@
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: stable;
 }
+
 
 /* Focus styles */
 :focus-visible {
