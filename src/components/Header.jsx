@@ -10,13 +10,23 @@ const Header = () => {
   const { t, i18n } = useTranslation();
   const location = useLocation();
 
+  // ✅ Scroll handler (passive) + sem re-render desnecessário
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      const scrolled = window.scrollY > 50;
+      setIsScrolled((prev) => (prev === scrolled ? prev : scrolled));
     };
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // garante estado correto no load
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // ✅ Fecha menu ao trocar de rota (evita overlay/shift)
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const navLinks = [
     { path: '/', label: t('nav.home') },
@@ -32,14 +42,15 @@ const Header = () => {
     i18n.changeLanguage(newLang);
   };
 
-  const whatsappNumber = '+351934071660';
-  const whatsappMessage = encodeURIComponent('Olá! Quero saber mais sobre os serviços da HighLevelMKT.');
+  const whatsappNumber = '351934071660'; // ✅ wa.me sem "+"
+  const whatsappMessage = encodeURIComponent(
+    'Olá! Quero saber mais sobre os serviços da HighLevelMKT.'
+  );
 
   return (
     <>
-      <motion.header
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
+      {/* ✅ Header SEM animação de entrada (zera CLS no desktop) */}
+      <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled
             ? 'bg-dark-bg/95 backdrop-blur-lg shadow-lg border-b border-gray-800/50'
@@ -50,8 +61,10 @@ const Header = () => {
           <div className="flex items-center justify-between">
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2 group">
+              {/* Pode manter hover no logo, isso NÃO causa CLS */}
               <motion.div
                 whileHover={{ scale: 1.05 }}
+                transition={{ type: 'spring', stiffness: 260, damping: 20 }}
                 className="text-2xl md:text-3xl font-display font-bold"
               >
                 <span className="text-white">High</span>
@@ -90,11 +103,10 @@ const Header = () => {
                 onClick={toggleLanguage}
                 className="flex items-center space-x-1 text-gray-300 hover:text-orange-primary transition-colors"
                 aria-label={t('common.language')}
+                type="button"
               >
                 <Globe className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  {i18n.language.toUpperCase()}
-                </span>
+                <span className="text-sm font-medium">{i18n.language.toUpperCase()}</span>
               </button>
 
               <a
@@ -110,15 +122,16 @@ const Header = () => {
 
             {/* Mobile Menu Button */}
             <button
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              onClick={() => setIsMobileMenuOpen((v) => !v)}
               className="lg:hidden text-white p-2 hover:text-orange-primary transition-colors"
               aria-label="Toggle menu"
+              type="button"
             >
               {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
           </div>
         </nav>
-      </motion.header>
+      </header>
 
       {/* Mobile Menu */}
       <AnimatePresence>
@@ -136,6 +149,8 @@ const Header = () => {
                 <button
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="text-gray-400 hover:text-white transition-colors"
+                  type="button"
+                  aria-label="Close menu"
                 >
                   <X className="w-6 h-6" />
                 </button>
@@ -146,7 +161,6 @@ const Header = () => {
                   <Link
                     key={link.path}
                     to={link.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
                     className={`block text-lg font-medium transition-colors ${
                       location.pathname === link.path
                         ? 'text-orange-primary'
@@ -162,6 +176,7 @@ const Header = () => {
                 <button
                   onClick={toggleLanguage}
                   className="w-full flex items-center justify-center space-x-2 py-3 border border-gray-700 rounded-lg text-gray-300 hover:border-orange-primary hover:text-orange-primary transition-colors"
+                  type="button"
                 >
                   <Globe className="w-5 h-5" />
                   <span>{i18n.language === 'pt' ? 'English' : 'Português'}</span>
@@ -172,7 +187,6 @@ const Header = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn-primary w-full justify-center"
-                  onClick={() => setIsMobileMenuOpen(false)}
                 >
                   <MessageCircle className="w-5 h-5" />
                   {t('common.cta_primary')}
