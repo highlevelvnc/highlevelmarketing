@@ -1,0 +1,954 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proposta Estratégica 2026 - LP Consultores | HighLevelMkt</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --primary: #ff6b35;
+            --primary-dark: #e85a28;
+            --bg-dark: #0a0a0a;
+            --bg-card: #151515;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --gradient: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%);
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', Arial, sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* SCROLLBAR CUSTOMIZADO */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 5px;
+        }
+        
+        /* NAVEGAÇÃO FIXA */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 2px solid rgba(255, 107, 53, 0.2);
+        }
+        
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--primary);
+            letter-spacing: -0.5px;
+        }
+        
+        .nav-menu {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 4px;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary);
+            background: rgba(255, 107, 53, 0.1);
+        }
+        
+        /* HERO SECTION */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 150px 50px 100px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 107, 53, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .hero h1 {
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            line-height: 1.1;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero .subtitle {
+            font-size: 28px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        
+        .hero .client {
+            font-size: 48px;
+            font-weight: 700;
+            margin: 40px 0;
+            color: var(--text-primary);
+        }
+        
+        .hero .intro {
+            max-width: 700px;
+            font-size: 18px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: var(--gradient);
+            color: var(--bg-dark);
+            font-size: 16px;
+            font-weight: 700;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5);
+        }
+        
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+        
+        .scroll-indicator::after {
+            content: '↓';
+            font-size: 32px;
+            color: var(--primary);
+        }
+        
+        /* SECTION PADRÃO */
+        .section {
+            padding: 100px 50px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .section-header h2 {
+            font-size: 56px;
+            font-weight: 900;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-header p {
+            font-size: 20px;
+            color: var(--text-secondary);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+        
+        /* QUOTE BOX */
+        .quote-box {
+            background: var(--gradient);
+            color: var(--bg-dark);
+            padding: 60px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 80px auto;
+            max-width: 1000px;
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.3);
+            animation: fadeInUp 1s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quote-box::before {
+            content: '"';
+            position: absolute;
+            top: -20px;
+            left: 30px;
+            font-size: 120px;
+            opacity: 0.2;
+        }
+        
+        /* METODOLOGIA CARDS */
+        .method-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .method-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .method-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .method-card:hover::before {
+            left: 100%;
+        }
+        
+        .method-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+            border-left-width: 8px;
+        }
+        
+        .method-card h3 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .method-card p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        
+        /* PLANOS - TABELA INTERATIVA */
+        .plans-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .plan-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px 30px;
+            border-top: 4px solid var(--primary);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .plan-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 30px 80px rgba(255, 107, 53, 0.3);
+            z-index: 10;
+        }
+        
+        .plan-card.featured {
+            background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, var(--bg-card) 100%);
+            border-top: 4px solid var(--primary);
+        }
+        
+        .plan-badge {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            background: var(--gradient);
+            color: var(--bg-dark);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .plan-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .plan-price {
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        
+        .plan-price span {
+            font-size: 18px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        
+        .plan-contracts {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            min-height: 40px;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+        
+        .plan-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+            color: var(--text-secondary);
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .plan-features li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 18px;
+        }
+        
+        .plan-features li.highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+        
+        /* KPIs GRID */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+        
+        .kpi-card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 40px 30px;
+            text-align: center;
+            border-top: 4px solid var(--primary);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .kpi-card::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            background: var(--gradient);
+            transition: height 0.4s ease;
+        }
+        
+        .kpi-card:hover::after {
+            height: 100%;
+            opacity: 0.1;
+        }
+        
+        .kpi-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+        }
+        
+        .kpi-icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .kpi-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+        
+        .kpi-desc {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* FASES - TIMELINE */
+        .timeline {
+            position: relative;
+            max-width: 1000px;
+            margin: 80px auto;
+        }
+        
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 4px;
+            background: var(--gradient);
+            transform: translateX(-50%);
+        }
+        
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .timeline-item:nth-child(odd) {
+            padding-right: 50%;
+            text-align: right;
+        }
+        
+        .timeline-item:nth-child(even) {
+            padding-left: 50%;
+            text-align: left;
+        }
+        
+        .timeline-content {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 107, 53, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+        
+        .timeline-content:hover {
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(255, 107, 53, 0.2);
+            transform: scale(1.05);
+        }
+        
+        .timeline-badge {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--bg-dark);
+            box-shadow: 0 0 0 8px var(--bg-dark);
+        }
+        
+        .phase-number {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .phase-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+        
+        .phase-desc {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
+        
+        /* NOTE BOX */
+        .note-box {
+            background: var(--bg-card);
+            border-left: 4px solid var(--primary);
+            padding: 30px;
+            border-radius: 8px;
+            margin: 60px auto;
+            max-width: 1000px;
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        /* FOOTER */
+        .footer {
+            background: var(--bg-card);
+            padding: 80px 50px 40px;
+            text-align: center;
+            border-top: 2px solid rgba(255, 107, 53, 0.2);
+        }
+        
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .footer h3 {
+            font-size: 42px;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .footer p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+        
+        .footer-bottom {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        /* ANIMAÇÕES AO SCROLL */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 48px; }
+            .section-header h2 { font-size: 36px; }
+            .plans-container { grid-template-columns: 1fr; }
+            .timeline::before { left: 30px; }
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                padding-left: 80px;
+                padding-right: 0;
+                text-align: left;
+            }
+            .timeline-badge {
+                left: 30px;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVEGAÇÃO -->
+<nav class="nav">
+    <div class="nav-logo">HighLevelMkt</div>
+    <div class="nav-menu">
+        <a href="#visao" class="nav-link">Visão</a>
+        <a href="#metodologia" class="nav-link">Metodologia</a>
+        <a href="#planos" class="nav-link">Planos</a>
+        <a href="#kpis" class="nav-link">KPIs</a>
+        <a href="#implementacao" class="nav-link">Implementação</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>PLANO ESTRATÉGICO<br>DIGITAL 2026</h1>
+        <div class="subtitle">PERFORMANCE • AUTORIDADE • GERAÇÃO DE LEADS</div>
+        <div class="client">LP CONSULTORES</div>
+        <div class="intro">
+            A HighLevelMkt opera no mercado imobiliário com experiência comprovada em tráfego pago, geração de leads qualificados e estruturação de autoridade digital. Nossa abordagem integra performance mensurável, produção estratégica de conteúdo e inteligência de dados para entregar resultados previsíveis e escaláveis.
+        </div>
+        <a href="#visao" class="cta-button">Explorar Proposta</a>
+    </div>
+    <div class="scroll-indicator"></div>
+</section>
+
+<!-- VISÃO 2026 -->
+<section id="visao" class="section">
+    <div class="section-header fade-in">
+        <h2>VISÃO 2026</h2>
+        <p>O mercado imobiliário está orientado a dados. Autoridade digital deixou de ser diferencial — tornou-se requisito. A geração de leads não pode depender de improviso.</p>
+    </div>
+    
+    <div class="quote-box fade-in">
+        Não operamos marketing. Operamos dados.
+    </div>
+    
+    <div class="method-grid">
+        <div class="method-card fade-in">
+            <h3>Estrutura</h3>
+            <p>Base técnica sólida com pixel, integrações e automações. Preparação completa para operação orientada a dados e otimização contínua.</p>
+        </div>
+        <div class="method-card fade-in">
+            <h3>Previsibilidade</h3>
+            <p>Campanhas monitoradas em tempo real. Ajustes baseados em performance. Crescimento sustentável e mensurável mês a mês.</p>
+        </div>
+        <div class="method-card fade-in">
+            <h3>Otimização</h3>
+            <p>Inteligência aplicada em cada decisão. Maximização de ROI através de dados comportamentais e análise estratégica contínua.</p>
+        </div>
+    </div>
+</section>
+
+<!-- METODOLOGIA -->
+<section id="metodologia" class="section" style="background: rgba(255, 107, 53, 0.02);">
+    <div class="section-header fade-in">
+        <h2>METODOLOGIA HIGHLEVELMKT™</h2>
+        <p>Abordagem integrada que transforma marketing em ativo estratégico previsível</p>
+    </div>
+    
+    <div class="method-grid">
+        <div class="method-card fade-in">
+            <h3>📊 Marketing de Performance</h3>
+            <p>Gestão estratégica de Meta Ads e Google Ads com segmentação baseada em dados comportamentais e demográficos. Otimização contínua orientada a CPL, CAC e ROAS. Cada investimento em mídia é monitorado e ajustado para maximizar retorno.</p>
+        </div>
+        
+        <div class="method-card fade-in">
+            <h3>✍️ Conteúdo e Autoridade</h3>
+            <p>Planejamento editorial alinhado ao funil de vendas. Publicações estratégicas que constroem autoridade, educam o mercado e geram engajamento qualificado. Posicionamento profissional que diferencia a marca no setor.</p>
+        </div>
+        
+        <div class="method-card fade-in">
+            <h3>🎥 Vídeos Estratégicos</h3>
+            <p>Produção profissional com captação interna e externa. Conteúdo otimizado para anúncios e redes sociais. Drone incluso nos planos superiores para diferenciação visual. Tour 360° disponível no plano mais avançado.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PLANOS -->
+<section id="planos" class="section">
+    <div class="section-header fade-in">
+        <h2>PLANOS ESTRATÉGICOS</h2>
+        <p>Escolha o plano ideal para o crescimento da LP Consultores</p>
+    </div>
+    
+    <div class="plans-container">
+        <!-- STARTER -->
+        <div class="plan-card fade-in">
+            <div class="plan-name">Starter</div>
+            <div class="plan-price">250€<span>/mês</span></div>
+            <div class="plan-contracts"></div>
+            <ul class="plan-features">
+                <li>1 vídeo mensal (vertical)</li>
+                <li>Tráfego pago básico (Meta Ads)</li>
+                <li>6–8 publicações mensais</li>
+                <li>Integração básica</li>
+                <li>Monitoramento simples</li>
+            </ul>
+        </div>
+        
+        <!-- ESSENCIAL -->
+        <div class="plan-card fade-in">
+            <div class="plan-name">Essencial</div>
+            <div class="plan-price">450€<span>/mês</span></div>
+            <div class="plan-contracts">6 meses: 400€/mês</div>
+            <ul class="plan-features">
+                <li>2 vídeos mensais</li>
+                <li>Gestão estratégica de tráfego</li>
+                <li>12 publicações mensais</li>
+                <li>Pixel e integrações</li>
+                <li>Relatório mensal</li>
+            </ul>
+        </div>
+        
+        <!-- PRIME -->
+        <div class="plan-card featured fade-in">
+            <div class="plan-badge">RECOMENDADO</div>
+            <div class="plan-name">Prime</div>
+            <div class="plan-price">750€<span>/mês</span></div>
+            <div class="plan-contracts">6 meses: 700€/mês<br>12 meses: 650€/mês</div>
+            <ul class="plan-features">
+                <li>4 vídeos mensais</li>
+                <li>Gestão completa de tráfego</li>
+                <li>Estratégia de conteúdo estruturada</li>
+                <li class="highlight">Landing page dedicada</li>
+                <li class="highlight">Estrutura digital completa</li>
+            </ul>
+        </div>
+        
+        <!-- PRO -->
+        <div class="plan-card featured fade-in">
+            <div class="plan-badge">PREMIUM</div>
+            <div class="plan-name">Pro</div>
+            <div class="plan-price">1050€<span>/mês</span></div>
+            <div class="plan-contracts">6 meses: 950€/mês<br>12 meses: 850€/mês</div>
+            <ul class="plan-features">
+                <li>8 vídeos mensais + Drone</li>
+                <li>Gestão avançada de tráfego</li>
+                <li>Funil completo estruturado</li>
+                <li class="highlight">Website estratégico incluso</li>
+                <li class="highlight">Tour 360° + Data Intelligence</li>
+                <li class="highlight">Integração total de dados</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="note-box fade-in">
+        💡 Estrutura digital completa (website estratégico) está inclusa a partir do Plano Prime.
+    </div>
+</section>
+
+<!-- KPIs -->
+<section id="kpis" class="section" style="background: rgba(255, 107, 53, 0.02);">
+    <div class="section-header fade-in">
+        <h2>KPIs MONITORADOS</h2>
+        <p>Toda operação é orientada por dados mensuráveis</p>
+    </div>
+    
+    <div class="kpi-grid">
+        <div class="kpi-card fade-in">
+            <div class="kpi-icon">💰</div>
+            <div class="kpi-name">CPL</div>
+            <div class="kpi-desc">Custo por Lead — quanto investimos para gerar cada lead qualificado</div>
+        </div>
+        
+        <div class="kpi-card fade-in">
+            <div class="kpi-icon">📈</div>
+            <div class="kpi-name">CAC</div>
+            <div class="kpi-desc">Custo de Aquisição de Cliente — investimento total para converter um cliente</div>
+        </div>
+        
+        <div class="kpi-card fade-in">
+            <div class="kpi-icon">🎯</div>
+            <div class="kpi-name">CTR</div>
+            <div class="kpi-desc">Taxa de Cliques — percentual de pessoas que clicam nos anúncios</div>
+        </div>
+        
+        <div class="kpi-card fade-in">
+            <div class="kpi-icon">💎</div>
+            <div class="kpi-name">ROAS</div>
+            <div class="kpi-desc">Retorno sobre Investimento em Anúncios — quanto retorna para cada euro investido</div>
+        </div>
+        
+        <div class="kpi-card fade-in">
+            <div class="kpi-icon">🔄</div>
+            <div class="kpi-name">Taxa de Conversão</div>
+            <div class="kpi-desc">Percentual de leads que avançam para agendamentos e negociações</div>
+        </div>
+        
+        <div class="kpi-card fade-in">
+            <div class="kpi-icon">👥</div>
+            <div class="kpi-name">Leads Qualificados</div>
+            <div class="kpi-desc">Volume e perfil dos leads gerados mensalmente</div>
+        </div>
+        
+        <div class="kpi-card fade-in">
+            <div class="kpi-icon">📅</div>
+            <div class="kpi-name">Custo por Agendamento</div>
+            <div class="kpi-desc">Eficiência do funil — investimento necessário para cada agendamento</div>
+        </div>
+        
+        <div class="kpi-card fade-in">
+            <div class="kpi-icon">🚀</div>
+            <div class="kpi-name">Autoridade Digital</div>
+            <div class="kpi-desc">Crescimento de alcance, engajamento e posicionamento da marca</div>
+        </div>
+    </div>
+</section>
+
+<!-- IMPLEMENTAÇÃO -->
+<section id="implementacao" class="section">
+    <div class="section-header fade-in">
+        <h2>IMPLEMENTAÇÃO</h2>
+        <p>Processo estruturado em 4 fases estratégicas</p>
+    </div>
+    
+    <div class="timeline">
+        <div class="timeline-item fade-in">
+            <div class="timeline-badge">1</div>
+            <div class="timeline-content">
+                <div class="phase-number">FASE 1</div>
+                <div class="phase-title">Setup Técnico</div>
+                <div class="phase-desc">Configuração de pixel, integrações, automações e estrutura de rastreamento. Preparação da base técnica para operação orientada a dados.</div>
+            </div>
+        </div>
+        
+        <div class="timeline-item fade-in">
+            <div class="timeline-badge">2</div>
+            <div class="timeline-content">
+                <div class="phase-number">FASE 2</div>
+                <div class="phase-title">Produção de Ativos</div>
+                <div class="phase-desc">Criação de conteúdo, vídeos estratégicos, criativos para anúncios e materiais de conversão. Construção do arsenal de marketing.</div>
+            </div>
+        </div>
+        
+        <div class="timeline-item fade-in">
+            <div class="timeline-badge">3</div>
+            <div class="timeline-content">
+                <div class="phase-number">FASE 3</div>
+                <div class="phase-title">Lançamento e Otimização</div>
+                <div class="phase-desc">Ativação de campanhas, monitoramento em tempo real e ajustes baseados em performance. Otimização contínua para maximizar resultados.</div>
+            </div>
+        </div>
+        
+        <div class="timeline-item fade-in">
+            <div class="timeline-badge">4</div>
+            <div class="timeline-content">
+                <div class="phase-number">FASE 4</div>
+                <div class="phase-title">Escala Estratégica</div>
+                <div class="phase-desc">Expansão de investimento, diversificação de canais e maximização de ROI. Crescimento sustentável e previsível.</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="note-box fade-in">
+        💳 Investimento em Mídia Recomendado: 150€ a 300€ mensais (pagamento direto às plataformas)
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+    <div class="footer-content">
+        <div class="quote-box">
+            2026 será o ano das imobiliárias que estruturam dados, constroem autoridade e dominam performance.
+        </div>
+        
+        <h3>HighLevelMkt.com</h3>
+        <p>Especialistas em Performance e Autoridade Digital</p>
+        
+        <a href="#" class="cta-button">Vamos Começar</a>
+    </div>
+    
+    <div class="footer-bottom">
+        © 2026 HighLevelMkt — Todos os direitos reservados
+    </div>
+</footer>
+
+<script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
+    
+    // Fade in animation on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, observerOptions);
+    
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
