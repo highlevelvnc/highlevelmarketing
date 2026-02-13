@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proposta Digital 2026 - Restaurantes | HighLevelMkt</title>
+
+  <!-- Open Graph (WhatsApp) -->
+  <meta property="og:title" content="Proposta Digital 2026 | HighLevelMkt" />
+  <meta property="og:description" content="Tráfego pago + Conteúdo + Vídeos + Funil. Mais reservas e pedidos no WhatsApp para restaurantes em Portugal." />
+  <meta property="og:type" content="website" />
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --primary: #ff6b35;
+      --primary-dark: #e85a28;
+      --bg-dark: #0a0a0a;
+      --bg-card: #151515;
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --gradient: linear-gradient(135deg, #ff6b35 0%, #ff8c5a 100%);
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", Arial, sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: var(--primary); border-radius: 5px; }
+
+    /* NAV */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(10, 10, 10, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 20px 50px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      border-bottom: 2px solid rgba(255, 107, 53, 0.2);
+    }
+
+    .nav-logo {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: -0.5px;
+    }
+
+    .nav-menu { display: flex; gap: 30px; }
+    .nav-link {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      border-radius: 4px;
+    }
+    .nav-link:hover { color: var(--primary); background: rgba(255, 107, 53, 0.1); }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 150px 50px 100px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-media { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
+    .hero-media img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transform: scale(1.03);
+      transition: opacity 1s ease, transform 1.5s ease;
+      filter: saturate(1) contrast(1.05) brightness(0.50);
+    }
+    .hero-media img.active { opacity: 1; transform: scale(1); }
+
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(circle at 50% 45%, rgba(255, 107, 53, 0.14) 0%, transparent 70%),
+        linear-gradient(180deg, rgba(10,10,10,0.15) 0%, rgba(10,10,10,0.92) 78%, rgba(10,10,10,1) 100%);
+      animation: pulse 4s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:.8} 50%{opacity:1} }
+
+    .hero-content { position: relative; z-index: 1; animation: fadeInUp 1s ease-out; }
+    @keyframes fadeInUp { from{opacity:0; transform: translateY(30px)} to{opacity:1; transform: translateY(0)} }
+
+    .hero h1 {
+      font-size: 72px;
+      font-weight: 900;
+      margin-bottom: 14px;
+      letter-spacing: -2px;
+      line-height: 1.1;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero .subtitle {
+      font-size: 18px;
+      color: rgba(255,255,255,0.75);
+      margin-bottom: 14px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero .client {
+      font-size: 44px;
+      font-weight: 900;
+      margin: 18px 0 22px;
+      letter-spacing: -0.6px;
+      color: #fff;
+    }
+
+    .hero .intro {
+      max-width: 900px;
+      font-size: 18px;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.78);
+      margin: 0 auto 28px;
+    }
+
+    .mini-proof {
+      max-width: 900px;
+      margin: 0 auto 30px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: rgba(255,255,255,0.80);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      backdrop-filter: blur(6px);
+    }
+    .pill b { color: #fff; }
+
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 18px 40px;
+      background: var(--gradient);
+      color: var(--bg-dark);
+      font-size: 16px;
+      font-weight: 900;
+      text-decoration: none;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 30px rgba(255, 107, 53, 0.3);
+    }
+    .cta-button:hover { transform: translateY(-3px); box-shadow: 0 15px 40px rgba(255, 107, 53, 0.5); }
+
+    .cta-button.secondary {
+      background: transparent;
+      color: var(--text-primary);
+      border: 2px solid rgba(255, 107, 53, 0.45);
+      box-shadow: none;
+    }
+    .cta-button.secondary:hover {
+      background: rgba(255, 107, 53, 0.10);
+      border-color: rgba(255, 107, 53, 0.75);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: bounce 2s infinite;
+      z-index: 1;
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-10px); }
+    }
+    .scroll-indicator::after { content: "↓"; font-size: 32px; color: var(--primary); }
+
+    /* SECTION */
+    .section {
+      padding: 100px 50px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 80px;
+      animation: fadeInUp 1s ease-out;
+    }
+    .section-header h2 {
+      font-size: 56px;
+      font-weight: 900;
+      margin-bottom: 18px;
+      letter-spacing: -1px;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .section-header p {
+      font-size: 20px;
+      color: var(--text-secondary);
+      max-width: 980px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+
+    /* QUOTE */
+    .quote-box {
+      background: var(--gradient);
+      color: var(--bg-dark);
+      padding: 60px;
+      border-radius: 16px;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 900;
+      margin: 70px auto;
+      max-width: 1000px;
+      box-shadow: 0 20px 60px rgba(255, 107, 53, 0.3);
+      animation: fadeInUp 1s ease-out;
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-box::before {
+      content: '"';
+      position: absolute;
+      top: -20px;
+      left: 30px;
+      font-size: 120px;
+      opacity: 0.2;
+    }
+
+    /* CARDS */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+    .method-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 40px;
+      border-left: 4px solid var(--primary);
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .method-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 107, 53, 0.1), transparent);
+      transition: left 0.5s;
+    }
+    .method-card:hover::before { left: 100%; }
+    .method-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+      border-left-width: 8px;
+    }
+    .method-card h3 {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+    .method-card p { font-size: 16px; line-height: 1.85; color: var(--text-secondary); }
+
+    /* GALLERY */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 18px;
+      margin-top: 50px;
+    }
+    .gallery-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      position: relative;
+      cursor: pointer;
+      transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease;
+    }
+    .gallery-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 107, 53, 0.35);
+      box-shadow: 0 20px 70px rgba(255, 107, 53, 0.18);
+    }
+    .gallery-card img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      display: block;
+      filter: saturate(1.05) contrast(1.05);
+    }
+    .gallery-meta { padding: 16px 16px 18px; }
+    .gallery-meta h4 { font-size: 16px; font-weight: 900; margin-bottom: 6px; }
+    .gallery-meta p { font-size: 13px; color: var(--text-secondary); line-height: 1.6; }
+    .span-4 { grid-column: span 4; }
+    .span-6 { grid-column: span 6; }
+
+    /* MODAL */
+    .modal {
+      position: fixed; inset: 0;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.75);
+      z-index: 2000;
+      padding: 26px;
+    }
+    .modal.open { display: flex; }
+    .modal-content {
+      width: min(1000px, 96vw);
+      background: #0f0f0f;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 30px 120px rgba(0,0,0,0.6);
+    }
+    .modal-img {
+      width: 100%;
+      height: min(62vh, 520px);
+      object-fit: cover;
+      display: block;
+    }
+    .modal-body {
+      padding: 18px 18px 22px;
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .modal-title { font-size: 16px; font-weight: 900; }
+    .modal-desc { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+    .modal-actions { display: flex; gap: 10px; align-items: center; }
+    .btn-small {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 900;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px solid rgba(255, 107, 53, 0.35);
+      color: var(--text-primary);
+      background: rgba(255, 107, 53, 0.10);
+    }
+    .btn-small:hover { border-color: rgba(255, 107, 53, 0.75); background: rgba(255, 107, 53, 0.16); }
+    .btn-close {
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 900;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.12);
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.06);
+    }
+    .btn-close:hover { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.20); }
+
+    /* PLANS */
+    .plans-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+    .plan-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 40px 30px;
+      border-top: 4px solid var(--primary);
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+    }
+    .plan-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 30px 80px rgba(255, 107, 53, 0.3);
+      z-index: 10;
+    }
+    .plan-card.featured {
+      background: linear-gradient(135deg, rgba(255, 107, 53, 0.1) 0%, var(--bg-card) 100%);
+      border-top: 4px solid var(--primary);
+    }
+    .plan-badge {
+      position: absolute;
+      top: -15px;
+      right: 20px;
+      background: var(--gradient);
+      color: var(--bg-dark);
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+    .plan-name {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 20px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .plan-price {
+      font-size: 48px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+    .plan-price span { font-size: 18px; color: var(--text-secondary); font-weight: 400; }
+    .plan-contracts {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 30px;
+      min-height: 40px;
+    }
+    .plan-features { list-style: none; margin-bottom: 30px; }
+    .plan-features li {
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 14px;
+      color: var(--text-secondary);
+      position: relative;
+      padding-left: 30px;
+    }
+    .plan-features li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--primary);
+      font-weight: 900;
+      font-size: 18px;
+    }
+    .plan-features li.highlight { color: var(--primary); font-weight: 800; }
+
+    /* KPIs */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-top: 60px;
+    }
+    .kpi-card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 40px 30px;
+      text-align: center;
+      border-top: 4px solid var(--primary);
+      transition: all 0.4s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .kpi-card::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 0;
+      background: var(--gradient);
+      transition: height 0.4s ease;
+    }
+    .kpi-card:hover::after { height: 100%; opacity: 0.1; }
+    .kpi-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 60px rgba(255, 107, 53, 0.2);
+    }
+    .kpi-icon { font-size: 48px; margin-bottom: 20px; }
+    .kpi-name { font-size: 24px; font-weight: 900; color: var(--primary); margin-bottom: 15px; }
+    .kpi-desc { font-size: 14px; color: var(--text-secondary); line-height: 1.6; }
+
+    /* TIMELINE */
+    .timeline { position: relative; max-width: 1000px; margin: 80px auto; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      top: 0; bottom: 0;
+      left: 50%;
+      width: 4px;
+      background: var(--gradient);
+      transform: translateX(-50%);
+    }
+    .timeline-item { position: relative; margin-bottom: 60px; animation: fadeInUp 1s ease-out; }
+    .timeline-item:nth-child(odd) { padding-right: 50%; text-align: right; }
+    .timeline-item:nth-child(even) { padding-left: 50%; text-align: left; }
+
+    .timeline-content {
+      background: var(--bg-card);
+      padding: 30px;
+      border-radius: 16px;
+      border: 2px solid rgba(255, 107, 53, 0.2);
+      transition: all 0.4s ease;
+      cursor: pointer;
+    }
+    .timeline-content:hover {
+      border-color: var(--primary);
+      box-shadow: 0 10px 40px rgba(255, 107, 53, 0.2);
+      transform: scale(1.05);
+    }
+    .timeline-badge {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60px; height: 60px;
+      background: var(--gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--bg-dark);
+      box-shadow: 0 0 0 8px var(--bg-dark);
+    }
+    .phase-number {
+      font-size: 14px;
+      font-weight: 900;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+    .phase-title { font-size: 24px; font-weight: 900; margin-bottom: 15px; }
+    .phase-desc { font-size: 15px; color: var(--text-secondary); line-height: 1.7; }
+
+    /* NOTE */
+    .note-box {
+      background: var(--bg-card);
+      border-left: 4px solid var(--primary);
+      padding: 30px;
+      border-radius: 8px;
+      margin: 60px auto;
+      max-width: 1000px;
+      font-size: 18px;
+      font-weight: 900;
+    }
+
+    /* FOOTER */
+    .footer {
+      background: var(--bg-card);
+      padding: 80px 50px 40px;
+      text-align: center;
+      border-top: 2px solid rgba(255, 107, 53, 0.2);
+    }
+    .footer-content { max-width: 900px; margin: 0 auto; }
+    .footer h3 { font-size: 42px; font-weight: 900; color: var(--primary); margin-bottom: 20px; }
+    .footer p { font-size: 18px; color: var(--text-secondary); margin-bottom: 40px; }
+    .footer-bottom {
+      margin-top: 60px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    /* SCROLL ANIM */
+    .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    /* RESPONSIVE */
+    @media (max-width: 980px) {
+      .hero h1 { font-size: 44px; }
+      .hero .client { font-size: 32px; }
+      .mini-proof { grid-template-columns: 1fr; }
+      .section-header h2 { font-size: 36px; }
+      .plans-container { grid-template-columns: 1fr; }
+      .timeline::before { left: 30px; }
+      .timeline-item:nth-child(odd),
+      .timeline-item:nth-child(even) {
+        padding-left: 80px;
+        padding-right: 0;
+        text-align: left;
+      }
+      .timeline-badge { left: 30px; transform: translateX(0); }
+      .span-4, .span-6 { grid-column: span 12; }
+      .nav { padding: 16px 18px; }
+      .nav-menu { display: none; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="nav-logo">HighLevelMkt</div>
+    <div class="nav-menu">
+      <a href="#visao" class="nav-link">Visão</a>
+      <a href="#estrategia" class="nav-link">Estratégia</a>
+      <a href="#imagens" class="nav-link">Imagens</a>
+      <a href="#planos" class="nav-link">Planos</a>
+      <a href="#kpis" class="nav-link">KPIs</a>
+      <a href="#implementacao" class="nav-link">Implementação</a>
+      <a href="#contato" class="nav-link">Contacto</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="topo">
+    <!-- imagens da internet (Unsplash CDN) -->
+    <div class="hero-media" aria-hidden="true">
+      <img class="active" src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=2400&q=80" alt="">
+      <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=2400&q=80" alt="">
+      <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=2400&q=80" alt="">
+      <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=2400&q=80" alt="">
+    </div>
+    <div class="hero-overlay" aria-hidden="true"></div>
+
+    <div class="hero-content">
+      <div class="subtitle">RESERVAS • PEDIDOS • MOVIMENTO</div>
+      <h1>PROPOSTA DIGITAL<br>RESTAURANTES 2026</h1>
+      <div class="client">Para restaurantes em Portugal</div>
+
+      <div class="intro">
+        Transformamos presença digital em <strong>reservas</strong> e <strong>pedidos no WhatsApp</strong> com uma operação simples:
+        <strong>tráfego pago + conteúdo que dá água na boca + funil de conversão</strong>.
+        Objetivo: mais mesas ocupadas, mais pedidos, mais recorrência.
+      </div>
+
+      <div class="mini-proof">
+        <div class="pill">📍 <b>Local</b>: campanhas por raio</div>
+        <div class="pill">🍽️ <b>Oferta</b>: menu, combos, eventos</div>
+        <div class="pill">💬 <b>WhatsApp</b>: reserva rápida</div>
+      </div>
+
+      <div class="cta-row">
+        <a href="#planos" class="cta-button">Ver Planos</a>
+        <a href="#imagens" class="cta-button secondary">Ver Imagens</a>
+        <a href="#contato" class="cta-button secondary">Falar no WhatsApp</a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator"></div>
+  </section>
+
+  <!-- VISÃO -->
+  <section id="visao" class="section">
+    <div class="section-header fade-in">
+      <h2>VISÃO 2026</h2>
+      <p>
+        O cliente decide em segundos. Se o restaurante não transmite vontade e confiança online, ele escolhe o próximo.
+        A estratégia é clara: <strong>imagem forte</strong> + <strong>oferta certa</strong> + <strong>reserva fácil</strong>.
+      </p>
+    </div>
+
+    <div class="quote-box fade-in">
+      Restaurante cheio não acontece por sorte. Acontece por consistência.
+    </div>
+
+    <div class="method-grid">
+      <div class="method-card fade-in">
+        <h3>Conteúdo que dá fome</h3>
+        <p>Reels curtos, fotos apetitosas, bastidores e prova social. Conteúdo feito para parar o scroll e gerar desejo.</p>
+      </div>
+      <div class="method-card fade-in">
+        <h3>Oferta certa, na hora certa</h3>
+        <p>Combos, menu executivo, sobremesas, happy hour e eventos. Copy e criativos desenhados para vender.</p>
+      </div>
+      <div class="method-card fade-in">
+        <h3>Reserva sem fricção</h3>
+        <p>Botão direto no WhatsApp/Instagram, mensagens prontas e fluxo simples: reservar → confirmar → lotar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ESTRATÉGIA -->
+  <section id="estrategia" class="section" style="background: rgba(255, 107, 53, 0.02);">
+    <div class="section-header fade-in">
+      <h2>ESTRATÉGIA HIGHLEVELMKT™</h2>
+      <p>Uma operação completa para gerar movimento real no restaurante</p>
+    </div>
+
+    <div class="method-grid">
+      <div class="method-card fade-in">
+        <h3>📊 Tráfego Pago (Meta Ads)</h3>
+        <p>Campanhas locais para gerar <strong>reservas</strong> e <strong>pedidos</strong>. Segmentação por zona, interesses e horários (almoço/jantar). Otimização semanal.</p>
+      </div>
+
+      <div class="method-card fade-in">
+        <h3>📸 Conteúdo & Criativos</h3>
+        <p>Artes e vídeos focados em pratos, ambiente, equipa e prova social. Conteúdo pronto para anúncios e Instagram/TikTok.</p>
+      </div>
+
+      <div class="method-card fade-in">
+        <h3>⚡ Funil de Conversão</h3>
+        <p>Link WhatsApp com mensagem pronta, destaques no Instagram e (nos planos superiores) landing para menu, reservas e reviews.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMAGENS -->
+  <section id="imagens" class="section">
+    <div class="section-header fade-in">
+      <h2>REFERÊNCIAS VISUAIS</h2>
+      <p>Modelos de imagens e estética (clique para abrir em destaque)</p>
+    </div>
+
+    <div class="gallery">
+      <div class="gallery-card span-6 fade-in" data-title="Pratos (Hero Shot)" data-desc="Fotos que geram desejo imediato — perfeitas para anúncios.">
+        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?auto=format&fit=crop&w=1600&q=80" alt="Prato principal">
+        <div class="gallery-meta">
+          <h4>Prato Principal</h4>
+          <p>Imagem “parar o scroll”.</p>
+        </div>
+      </div>
+
+      <div class="gallery-card span-6 fade-in" data-title="Ambiente / Experiência" data-desc="Mostra o clima do restaurante — aumenta intenção de visita.">
+        <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?auto=format&fit=crop&w=1600&q=80" alt="Ambiente restaurante">
+        <div class="gallery-meta">
+          <h4>Ambiente</h4>
+          <p>Experiência que vende.</p>
+        </div>
+      </div>
+
+      <div class="gallery-card span-4 fade-in" data-title="Sobremesa" data-desc="Ótima para upsell e campanhas de impulso.">
+        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=1600&q=80" alt="Sobremesa">
+        <div class="gallery-meta">
+          <h4>Sobremesa</h4>
+          <p>Vontade + decisão rápida.</p>
+        </div>
+      </div>
+
+      <div class="gallery-card span-4 fade-in" data-title="Bebidas / Cocktails" data-desc="Perfeito para happy hour e eventos.">
+        <img src="https://images.unsplash.com/photo-1544145945-f90425340c7e?auto=format&fit=crop&w=1600&q=80" alt="Cocktail">
+        <div class="gallery-meta">
+          <h4>Bebidas</h4>
+          <p>Eventos & combos.</p>
+        </div>
+      </div>
+
+      <div class="gallery-card span-4 fade-in" data-title="Bastidores (Cozinha)" data-desc="Prova de cuidado e qualidade — gera confiança.">
+        <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1600&q=80" alt="Chef cozinha">
+        <div class="gallery-meta">
+          <h4>Bastidores</h4>
+          <p>Qualidade que aparece.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLANOS -->
+  <section id="planos" class="section">
+    <div class="section-header fade-in">
+      <h2>PLANOS (RESTAURANTES)</h2>
+      <p>Planos mensais com opção anual (12 meses) — todos incluem tráfego pago</p>
+    </div>
+
+    <div class="plans-container">
+      <div class="plan-card fade-in">
+        <div class="plan-name">Start</div>
+        <div class="plan-price">150€<span>/mês</span></div>
+        <div class="plan-contracts">12 meses: 135€/mês</div>
+        <ul class="plan-features">
+          <li>12 artes mensais (menu, promo, eventos)</li>
+          <li>1 vídeo semanal (conteúdo fornecido pelo restaurante)</li>
+          <li class="highlight">Tráfego pago incluso (Meta Ads)</li>
+          <li>Otimização básica (zona + horários)</li>
+          <li>Monitoramento essencial</li>
+        </ul>
+      </div>
+
+      <div class="plan-card fade-in">
+        <div class="plan-name">Growth</div>
+        <div class="plan-price">350€<span>/mês</span></div>
+        <div class="plan-contracts">12 meses: 320€/mês</div>
+        <ul class="plan-features">
+          <li>16 artes mensais</li>
+          <li>5 vídeos mensais (4 do restaurante + 1 produzido por nós)</li>
+          <li class="highlight">1 captação/mês (foto/vídeo)</li>
+          <li class="highlight">Tráfego pago incluso + otimizações</li>
+          <li>Relatório mensal</li>
+        </ul>
+      </div>
+
+      <div class="plan-card featured fade-in">
+        <div class="plan-badge">MAIS VENDIDO</div>
+        <div class="plan-name">Essencial</div>
+        <div class="plan-price">550€<span>/mês</span></div>
+        <div class="plan-contracts">12 meses: 500€/mês</div>
+        <ul class="plan-features">
+          <li>20 artes mensais</li>
+          <li>8 vídeos mensais (mix do restaurante + produção nossa)</li>
+          <li class="highlight">2 captações/mês (ambiente + pratos)</li>
+          <li class="highlight">Tráfego pago — gestão avançada</li>
+          <li class="highlight">Pixel + integrações + relatório estratégico</li>
+        </ul>
+      </div>
+
+      <div class="plan-card fade-in">
+        <div class="plan-name">Prime</div>
+        <div class="plan-price">850€<span>/mês</span></div>
+        <div class="plan-contracts">12 meses: 750€/mês</div>
+        <ul class="plan-features">
+          <li>20+ artes mensais</li>
+          <li>12 vídeos mensais (produção premium)</li>
+          <li class="highlight">3 captações/mês</li>
+          <li class="highlight">Tráfego pago — gestão completa</li>
+          <li class="highlight">Landing page (menu + reservas + reviews)</li>
+        </ul>
+      </div>
+
+      <div class="plan-card featured fade-in">
+        <div class="plan-badge">PREMIUM</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">1200€<span>/mês</span></div>
+        <div class="plan-contracts">12 meses: 1050€/mês</div>
+        <ul class="plan-features">
+          <li>Produção intensiva (conteúdo recorrente)</li>
+          <li class="highlight">Tráfego pago — gestão avançada</li>
+          <li>Funil completo + automações</li>
+          <li class="highlight">Website estratégico incluso</li>
+          <li class="highlight">Campanhas sazonais + eventos</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note-box fade-in">
+      💡 No Growth já incluímos <strong>captação profissional</strong> para elevar a qualidade dos anúncios.
+      Website incluso a partir do <strong>Pro</strong>.
+    </div>
+  </section>
+
+  <!-- KPIs -->
+  <section id="kpis" class="section" style="background: rgba(255, 107, 53, 0.02);">
+    <div class="section-header fade-in">
+      <h2>KPIs MONITORADOS</h2>
+      <p>Métricas que importam: reservas, pedidos, custo por mensagem e retorno</p>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card fade-in">
+        <div class="kpi-icon">📲</div>
+        <div class="kpi-name">Custo por Mensagem</div>
+        <div class="kpi-desc">Quanto custa gerar pedidos/reservas no WhatsApp/Instagram.</div>
+      </div>
+
+      <div class="kpi-card fade-in">
+        <div class="kpi-icon">🍽️</div>
+        <div class="kpi-name">Reservas Geradas</div>
+        <div class="kpi-desc">Volume de reservas e horários de pico.</div>
+      </div>
+
+      <div class="kpi-card fade-in">
+        <div class="kpi-icon">🛵</div>
+        <div class="kpi-name">Pedidos (Takeaway)</div>
+        <div class="kpi-desc">Mensagens com intenção de pedido e conversão.</div>
+      </div>
+
+      <div class="kpi-card fade-in">
+        <div class="kpi-icon">🎯</div>
+        <div class="kpi-name">CTR</div>
+        <div class="kpi-desc">Qualidade do criativo e interesse do público.</div>
+      </div>
+
+      <div class="kpi-card fade-in">
+        <div class="kpi-icon">💳</div>
+        <div class="kpi-name">Custo por Cliente</div>
+        <div class="kpi-desc">Quanto custa trazer um cliente real (por campanha).</div>
+      </div>
+
+      <div class="kpi-card fade-in">
+        <div class="kpi-icon">⭐</div>
+        <div class="kpi-name">Reputação</div>
+        <div class="kpi-desc">Crescimento de reviews e prova social.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPLEMENTAÇÃO -->
+  <section id="implementacao" class="section">
+    <div class="section-header fade-in">
+      <h2>IMPLEMENTAÇÃO</h2>
+      <p>Passo a passo simples para encher o WhatsApp de reservas</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item fade-in">
+        <div class="timeline-badge">1</div>
+        <div class="timeline-content">
+          <div class="phase-number">FASE 1</div>
+          <div class="phase-title">Oferta + Zona + Setup</div>
+          <div class="phase-desc">Definimos oferta (menu executivo / jantar / promo), raio de alcance e setup do WhatsApp/IG + campanhas.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-badge">2</div>
+        <div class="timeline-content">
+          <div class="phase-number">FASE 2</div>
+          <div class="phase-title">Conteúdo + Criativos</div>
+          <div class="phase-desc">Artes e vídeos para pratos, ambiente e prova social. Criativos específicos para anúncios.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-badge">3</div>
+        <div class="timeline-content">
+          <div class="phase-number">FASE 3</div>
+          <div class="phase-title">Lançar + Otimizar</div>
+          <div class="phase-desc">Campanhas no ar, testes de criativos/ofertas e ajustes semanais para baixar custo por reserva.</div>
+        </div>
+      </div>
+
+      <div class="timeline-item fade-in">
+        <div class="timeline-badge">4</div>
+        <div class="timeline-content">
+          <div class="phase-number">FASE 4</div>
+          <div class="phase-title">Escalar</div>
+          <div class="phase-desc">Reforço em dias fracos, campanhas sazonais e eventos (música, menu especial, feriados).</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note-box fade-in">
+      💳 Investimento em mídia recomendado: <strong>100€ a 250€ / mês</strong> (pagamento direto às plataformas).
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contato" class="section" style="background: rgba(255, 107, 53, 0.02);">
+    <div class="section-header fade-in">
+      <h2>CONTACTO</h2>
+      <p>Se quiser, eu envio 3 ideias de campanhas para o seu restaurante (zona + oferta + público).</p>
+    </div>
+
+    <div class="quote-box fade-in" style="font-size: 22px;">
+      Clique no botão e diga: <strong>“Quero mais reservas”</strong> 👇
+      <div style="margin-top: 22px;">
+        <a href="https://wa.me/351934071660" class="cta-button" target="_blank" rel="noopener">Falar no WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="quote-box">
+        2026 será o ano dos restaurantes que unem imagem forte + oferta certa + anúncios consistentes.
+      </div>
+
+      <h3>HighLevelMkt.com</h3>
+      <p>Performance, Conteúdo e Autoridade para Restaurantes</p>
+
+      <div class="cta-row" style="margin-top: 10px;">
+        <a href="https://wa.me/351934071660" class="cta-button" target="_blank" rel="noopener">Vamos Começar</a>
+        <a href="#planos" class="cta-button secondary">Ver Planos</a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2026 HighLevelMkt — Todos os direitos reservados
+    </div>
+  </footer>
+
+  <!-- MODAL -->
+  <div class="modal" id="modal">
+    <div class="modal-content">
+      <img class="modal-img" id="modalImg" src="" alt="Imagem em destaque" />
+      <div class="modal-body">
+        <div>
+          <div class="modal-title" id="modalTitle">Título</div>
+          <div class="modal-desc" id="modalDesc">Descrição</div>
+        </div>
+        <div class="modal-actions">
+          <a class="btn-small" href="#planos" id="modalCta">Ver Planos</a>
+          <button class="btn-close" id="modalClose">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Smooth scroll
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const href = this.getAttribute('href');
+        if (!href || href === '#') return;
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+    });
+
+    // Fade in
+    const observerOptions = { threshold: 0.1, rootMargin: "0px 0px -100px 0px" };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+    }, observerOptions);
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Hero slideshow
+    const heroImgs = Array.from(document.querySelectorAll('.hero-media img'));
+    let heroIndex = 0;
+    setInterval(() => {
+      if (heroImgs.length < 2) return;
+      heroImgs[heroIndex].classList.remove('active');
+      heroIndex = (heroIndex + 1) % heroImgs.length;
+      heroImgs[heroIndex].classList.add('active');
+    }, 5200);
+
+    // Gallery modal
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDesc = document.getElementById('modalDesc');
+    const modalClose = document.getElementById('modalClose');
+
+    function openModal(imgSrc, title, desc) {
+      modalImg.src = imgSrc;
+      modalTitle.textContent = title || 'Referências';
+      modalDesc.textContent = desc || '';
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+      modal.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('.gallery-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const img = card.querySelector('img');
+        openModal(
+          img ? img.src : '',
+          card.getAttribute('data-title'),
+          card.getAttribute('data-desc')
+        );
+      });
+    });
+
+    modalClose.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+  </script>
+</body>
+</html>
