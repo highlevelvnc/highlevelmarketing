@@ -1,0 +1,2821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HLM Predictable Revenue OS™ — HighLevelMkt</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;500;600;700;800;900&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --black:       #060608;
+  --deep:        #0a0a0e;
+  --surface:     #0f0f14;
+  --surface2:    #161620;
+  --card:        #12121a;
+  --border:      rgba(255,255,255,0.06);
+  --border2:     rgba(255,255,255,0.1);
+  --orange:      #ff5500;
+  --orange2:     #ff7733;
+  --orange-dim:  #cc4400;
+  --glow:        rgba(255,85,0,0.18);
+  --glow2:       rgba(255,85,0,0.08);
+  --glow3:       rgba(255,85,0,0.04);
+  --text:        #f0f0f4;
+  --text2:       #9898a8;
+  --text3:       #55555f;
+  --mono:        'DM Mono', monospace;
+  --cond:        'Barlow Condensed', sans-serif;
+  --body:        'Barlow', sans-serif;
+  --ease:        cubic-bezier(0.16, 1, 0.3, 1);
+  --ease2:       cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--black);
+  color: var(--text);
+  font-family: var(--body);
+  font-weight: 300;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ============================================================
+   CUSTOM CURSOR
+   ============================================================ */
+#cursor-dot {
+  position: fixed;
+  width: 6px; height: 6px;
+  background: var(--orange);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: transform 0.05s;
+}
+#cursor-ring {
+  position: fixed;
+  width: 32px; height: 32px;
+  border: 1px solid rgba(255,85,0,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease), height 0.3s var(--ease), opacity 0.3s, border-color 0.3s;
+}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring {
+  width: 52px; height: 52px;
+  border-color: var(--orange);
+}
+
+/* ============================================================
+   LOADING SCREEN
+   ============================================================ */
+#loader {
+  position: fixed;
+  inset: 0;
+  background: var(--black);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  overflow: hidden;
+}
+
+#loader::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 50% 60%, rgba(255,85,0,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.loader-scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255,255,255,0.012) 2px,
+    rgba(255,255,255,0.012) 4px
+  );
+  pointer-events: none;
+  animation: scanmove 8s linear infinite;
+}
+
+@keyframes scanmove {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 100px; }
+}
+
+.loader-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.loader-badge {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 0.5s var(--ease) 0.3s forwards;
+}
+
+.loader-title {
+  font-family: var(--cond);
+  font-size: clamp(48px, 10vw, 120px);
+  font-weight: 900;
+  line-height: 0.88;
+  text-align: center;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: fadeUp 0.6s var(--ease) 0.5s forwards;
+}
+
+.loader-title span {
+  color: var(--orange);
+  display: block;
+}
+
+.loader-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--text3);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 60px;
+  opacity: 0;
+  animation: fadeUp 0.5s var(--ease) 0.7s forwards;
+}
+
+.loader-bar-wrap {
+  width: min(400px, 80vw);
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeIn 0.3s ease 1s forwards;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--orange), var(--orange2));
+  animation: loadfill 2.2s var(--ease) 1.1s forwards;
+  position: relative;
+}
+
+.loader-bar-fill::after {
+  content: '';
+  position: absolute;
+  right: 0; top: -3px;
+  width: 6px; height: 7px;
+  background: #fff;
+  border-radius: 1px;
+  box-shadow: 0 0 10px var(--orange), 0 0 20px var(--orange);
+}
+
+@keyframes loadfill {
+  0%   { width: 0%; }
+  20%  { width: 30%; }
+  50%  { width: 65%; }
+  80%  { width: 85%; }
+  100% { width: 100%; }
+}
+
+.loader-status {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text3);
+  opacity: 0;
+  animation: fadeIn 0.3s ease 1s forwards;
+  height: 16px;
+  overflow: hidden;
+}
+
+.loader-status-inner {
+  animation: statusCycle 2.2s ease 1.1s forwards;
+}
+
+@keyframes statusCycle {
+  0%   { transform: translateY(0); content: 'INITIALIZING DATA LAYER'; }
+  33%  { transform: translateY(-16px); }
+  66%  { transform: translateY(-32px); }
+  100% { transform: translateY(-48px); }
+}
+
+.loader-corner {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  opacity: 0;
+  animation: fadeIn 0.5s ease 1.5s forwards;
+}
+.loader-corner.tl { top: 32px; left: 40px; }
+.loader-corner.tr { top: 32px; right: 40px; text-align: right; }
+.loader-corner.bl { bottom: 32px; left: 40px; }
+.loader-corner.br { bottom: 32px; right: 40px; text-align: right; }
+
+.loader-exit {
+  animation: loaderExit 0.8s var(--ease) forwards;
+}
+
+@keyframes loaderExit {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  40%  { opacity: 1; transform: translateY(0) scale(1.02); }
+  100% { opacity: 0; transform: translateY(-100%) scale(1); pointer-events: none; }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  to { opacity: 1; }
+}
+
+/* ============================================================
+   GLOBAL SCANLINES + NOISE
+   ============================================================ */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 120% 80% at 50% -20%, rgba(255,85,0,0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 100% 100%, rgba(255,85,0,0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  background-size: 200px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.4;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 40px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ============================================================
+   LANGUAGE TOGGLE
+   ============================================================ */
+#lang-toggle {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(15,15,20,0.9);
+  border: 1px solid var(--border2);
+  backdrop-filter: blur(20px);
+  border-radius: 100px;
+  padding: 4px;
+  box-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,85,0,0.1);
+}
+
+.lang-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  padding: 8px 16px;
+  border-radius: 100px;
+  border: none;
+  cursor: none;
+  background: transparent;
+  color: var(--text3);
+  transition: all 0.3s var(--ease);
+  text-transform: uppercase;
+}
+
+.lang-btn.active {
+  background: var(--orange);
+  color: #000;
+  font-weight: 500;
+}
+
+/* ============================================================
+   NAV
+   ============================================================ */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 0 40px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(6,6,8,0.8);
+  backdrop-filter: blur(24px) saturate(1.5);
+  border-bottom: 1px solid var(--border);
+  transition: all 0.3s;
+}
+
+nav.scrolled {
+  background: rgba(6,6,8,0.95);
+  border-bottom-color: rgba(255,85,0,0.15);
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.nav-logo {
+  font-family: var(--cond);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fff;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.nav-logo span { color: var(--orange); }
+
+.nav-sep {
+  width: 1px;
+  height: 18px;
+  background: var(--border2);
+}
+
+.nav-system {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 24px;
+  list-style: none;
+}
+
+.nav-links a {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover { color: var(--orange); }
+
+.nav-cta {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: #000;
+  background: var(--orange);
+  border: none;
+  padding: 8px 20px;
+  cursor: none;
+  text-decoration: none;
+  text-transform: uppercase;
+  border-radius: 2px;
+  font-weight: 500;
+  transition: background 0.2s, transform 0.2s;
+  white-space: nowrap;
+}
+
+.nav-cta:hover { background: var(--orange2); transform: translateY(-1px); }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* animated grid */
+.hero-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 20%, transparent 80%);
+}
+
+/* radial glow */
+.hero-glow {
+  position: absolute;
+  width: 700px; height: 500px;
+  background: radial-gradient(ellipse, rgba(255,85,0,0.12) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  animation: glowPulse 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glowPulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  50%       { transform: translate(-50%, -55%) scale(1.1); opacity: 1; }
+}
+
+.hero-inner {
+  padding: 80px 0 60px;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 32px;
+  padding: 8px 16px;
+  border: 1px solid rgba(255,85,0,0.3);
+  background: rgba(255,85,0,0.06);
+  border-radius: 2px;
+  opacity: 0;
+  animation: fadeUp 0.6s var(--ease) 0.2s forwards;
+}
+
+.hero-tag-dot {
+  width: 5px; height: 5px;
+  background: var(--orange);
+  border-radius: 50%;
+  animation: blink 1.5s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+.hero-headline {
+  font-family: var(--cond);
+  font-size: clamp(64px, 11vw, 150px);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 0;
+  opacity: 0;
+  animation: fadeUp 0.7s var(--ease) 0.35s forwards;
+}
+
+.hero-headline .outline {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.3);
+  color: transparent;
+}
+
+.hero-headline .orange { color: var(--orange); }
+
+.hero-descriptor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  margin-top: 48px;
+  opacity: 0;
+  animation: fadeUp 0.6s var(--ease) 0.55s forwards;
+}
+
+.hero-desc-text {
+  font-size: 15px;
+  font-weight: 300;
+  color: var(--text2);
+  line-height: 1.75;
+  max-width: 480px;
+}
+
+.hero-desc-text .lang-pt { display: none; }
+
+.hero-right {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 20px;
+}
+
+.hero-ctas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  opacity: 0;
+  animation: fadeUp 0.6s var(--ease) 0.7s forwards;
+}
+
+/* MAGNETIC BUTTON */
+.btn-mag {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  transition: transform 0.2s var(--ease);
+  cursor: none;
+}
+
+.btn-mag-inner {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 14px 28px;
+  transition: all 0.2s var(--ease);
+}
+
+.btn-primary-mag .btn-mag-inner {
+  background: var(--orange);
+  color: #000;
+  font-weight: 500;
+  border-radius: 2px;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+}
+
+.btn-primary-mag:hover .btn-mag-inner { background: var(--orange2); }
+
+.btn-ghost-mag .btn-mag-inner {
+  color: var(--text2);
+  border: 1px solid var(--border2);
+  border-radius: 2px;
+}
+
+.btn-ghost-mag:hover .btn-mag-inner {
+  border-color: var(--orange);
+  color: var(--orange);
+}
+
+.hero-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  background: rgba(15,15,20,0.6);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  margin-top: 80px;
+  opacity: 0;
+  animation: fadeUp 0.6s var(--ease) 0.85s forwards;
+}
+
+.metric {
+  padding: 28px 24px;
+  border-right: 1px solid var(--border);
+  position: relative;
+  overflow: hidden;
+  cursor: none;
+}
+
+.metric:last-child { border-right: none; }
+
+.metric::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--orange), transparent);
+  transform: scaleX(0);
+  transition: transform 0.4s var(--ease);
+}
+
+.metric:hover::before { transform: scaleX(1); }
+
+.metric-num {
+  font-family: var(--cond);
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--orange);
+  line-height: 1;
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+}
+
+.metric-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.metric-label .lang-pt { display: none; }
+
+/* ============================================================
+   SCROLL REVEAL
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+
+.reveal-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+
+.reveal-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Stagger delays for children */
+.stagger > *:nth-child(1) { transition-delay: 0s; }
+.stagger > *:nth-child(2) { transition-delay: 0.1s; }
+.stagger > *:nth-child(3) { transition-delay: 0.2s; }
+.stagger > *:nth-child(4) { transition-delay: 0.3s; }
+.stagger > *:nth-child(5) { transition-delay: 0.4s; }
+.stagger > *:nth-child(6) { transition-delay: 0.5s; }
+
+/* ============================================================
+   SECTION BASE
+   ============================================================ */
+.section {
+  padding: 120px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.section-divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border2) 20%, var(--border2) 80%, transparent);
+}
+
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.eyebrow::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--orange);
+  opacity: 0.5;
+}
+
+.eyebrow .lang-pt { display: none; }
+
+.section-title {
+  font-family: var(--cond);
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.section-title .lang-pt { display: none; }
+.section-title .outline {
+  -webkit-text-stroke: 1px rgba(255,255,255,0.2);
+  color: transparent;
+}
+.section-title .orange { color: var(--orange); }
+
+.section-title-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 60px;
+}
+
+.section-title-sub .lang-pt { display: none; }
+
+/* ============================================================
+   BODY TEXT BILINGUAL
+   ============================================================ */
+.body-en { display: block; }
+.body-pt { display: none; }
+
+/* when PT is active */
+.lang-active-pt .body-en { display: none; }
+.lang-active-pt .body-pt { display: block; }
+.lang-active-pt .lang-en { display: none; }
+.lang-active-pt .lang-pt { display: block !important; }
+
+/* ============================================================
+   PROBLEM SECTION
+   ============================================================ */
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--border);
+  margin-top: 64px;
+}
+
+.problem-cell {
+  background: var(--surface);
+  padding: 48px 40px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+
+.problem-cell:hover { background: var(--surface2); }
+
+.problem-cell::before {
+  content: attr(data-n);
+  font-family: var(--cond);
+  font-size: 100px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.02);
+  position: absolute;
+  bottom: -10px; right: 20px;
+  line-height: 1;
+  user-select: none;
+}
+
+.problem-cell-accent {
+  width: 32px; height: 2px;
+  background: var(--orange);
+  margin-bottom: 20px;
+}
+
+.problem-cell h3 {
+  font-family: var(--cond);
+  font-size: 20px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.problem-cell p {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+}
+
+.problem-cell h3 .lang-pt, .problem-cell p .lang-pt { display: none; }
+
+/* ============================================================
+   SYSTEM INTRO
+   ============================================================ */
+.system-intro {
+  background: var(--surface);
+  position: relative;
+  overflow: hidden;
+}
+
+.system-intro::before {
+  content: '';
+  position: absolute;
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(255,85,0,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.system-badge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  border: 1px solid rgba(255,85,0,0.25);
+  background: rgba(255,85,0,0.04);
+  padding: 24px 28px;
+  border-radius: 2px;
+  margin-bottom: 48px;
+}
+
+.system-badge-title {
+  font-family: var(--cond);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--orange);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.system-badge-sub {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.system-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: start;
+}
+
+.positioning-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 36px;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.positioning-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--orange) 0%, transparent 60%);
+}
+
+.positioning-title {
+  font-family: var(--cond);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.25em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.positioning-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.positioning-item {
+  display: flex;
+  gap: 12px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 1.5;
+}
+
+.positioning-item::before {
+  content: '→';
+  color: var(--orange);
+  flex-shrink: 0;
+}
+
+.positioning-item .lang-pt { display: none; }
+
+/* ============================================================
+   LAYERS
+   ============================================================ */
+.layers {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-top: 64px;
+}
+
+.layer {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: border-color 0.3s, background 0.3s;
+  cursor: none;
+}
+
+.layer:hover {
+  border-color: rgba(255,85,0,0.3);
+  background: var(--surface2);
+}
+
+.layer-side {
+  padding: 36px 28px;
+  background: rgba(0,0,0,0.3);
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.layer-side::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--orange);
+  transform: scaleY(0);
+  transition: transform 0.3s var(--ease);
+  transform-origin: bottom;
+}
+
+.layer:hover .layer-side::after { transform: scaleY(1); }
+
+.layer-num {
+  font-family: var(--cond);
+  font-size: 56px;
+  font-weight: 900;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+}
+
+.layer-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--orange);
+  text-transform: uppercase;
+}
+
+.layer-tag .lang-pt { display: none; }
+
+.layer-body {
+  padding: 32px 36px;
+}
+
+.layer-title {
+  font-family: var(--cond);
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 12px;
+}
+
+.layer-title .lang-pt { display: none; }
+
+.layer-desc {
+  font-size: 14px;
+  color: var(--text2);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.layer-desc .lang-pt { display: none; }
+
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tech-tag {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: var(--text3);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  border-radius: 1px;
+  text-transform: uppercase;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.layer:hover .tech-tag {
+  border-color: rgba(255,85,0,0.2);
+  color: var(--text2);
+}
+
+/* ============================================================
+   ARCHITECTURE DIAGRAM
+   ============================================================ */
+.arch-section {
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.arch-wrap {
+  border: 1px solid var(--border);
+  background: var(--surface);
+  padding: 60px;
+  position: relative;
+  overflow: hidden;
+  margin-top: 60px;
+}
+
+.arch-watermark {
+  position: absolute;
+  bottom: 20px; right: 28px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--text3);
+  text-transform: uppercase;
+}
+
+.arch-sources {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2px;
+  margin-bottom: 2px;
+}
+
+.arch-node {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  padding: 14px 12px;
+  text-align: center;
+}
+
+.arch-node-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.15em;
+  color: var(--text3);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.arch-node-name {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text2);
+  font-weight: 500;
+}
+
+.arch-arrow {
+  text-align: center;
+  padding: 10px 0;
+  color: var(--orange);
+  font-size: 18px;
+  line-height: 1;
+}
+
+.arch-main-node {
+  background: rgba(255,85,0,0.06);
+  border: 1px solid rgba(255,85,0,0.25);
+  padding: 20px 28px;
+  margin-bottom: 2px;
+}
+
+.arch-main-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.arch-main-title {
+  font-family: var(--cond);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fff;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.arch-main-detail {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text3);
+  line-height: 1.6;
+}
+
+.arch-outputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  margin-top: 2px;
+}
+
+.arch-output-node {
+  background: rgba(255,85,0,0.04);
+  border: 1px solid rgba(255,85,0,0.15);
+  padding: 16px;
+  text-align: center;
+}
+
+.arch-output-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.arch-output-sub {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--text3);
+}
+
+/* ============================================================
+   FINANCIAL
+   ============================================================ */
+.fin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-bottom: 64px;
+}
+
+.code-block {
+  background: var(--deep);
+  border: 1px solid var(--border);
+  border-left: 2px solid var(--orange);
+  padding: 28px 32px;
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text2);
+  line-height: 2.2;
+  position: relative;
+  overflow: hidden;
+}
+
+.code-block::before {
+  content: '// HLM SYSTEM v2 — REVENUE LOGIC';
+  display: block;
+  color: var(--text3);
+  margin-bottom: 12px;
+  font-size: 10px;
+}
+
+.code-block .kw { color: var(--orange); }
+.code-block .val { color: #88d4ab; }
+.code-block .cm { color: var(--text3); font-size: 10px; }
+
+.fin-table-wrap {
+  margin: 40px 0;
+  overflow-x: auto;
+}
+
+.fin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.fin-table thead tr {
+  background: var(--surface2);
+}
+
+.fin-table th {
+  padding: 12px 20px;
+  text-align: left;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  font-size: 9px;
+  color: var(--orange);
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border2);
+}
+
+.fin-table td {
+  padding: 11px 20px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text2);
+  vertical-align: top;
+}
+
+.fin-table tr:hover td { background: var(--surface); }
+.fin-table td.hot { color: var(--orange); font-weight: 500; }
+.fin-table td.green { color: #7edba0; }
+
+.fin-note {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  padding: 16px 20px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  line-height: 1.65;
+}
+
+/* ============================================================
+   IDEAL CLIENT
+   ============================================================ */
+.client-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  margin-top: 64px;
+}
+
+.client-col {
+  background: var(--surface);
+  padding: 44px 40px;
+}
+
+.client-col.no { background: var(--deep); opacity: 0.85; }
+
+.col-header {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border2);
+}
+
+.col-header.yes { color: var(--orange); }
+.col-header.no { color: var(--text3); }
+
+.col-header .lang-pt { display: none; }
+
+.ci {
+  font-size: 14px;
+  color: var(--text2);
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.55;
+}
+
+.ci.no-item { color: var(--text3); }
+
+.ci.yes::before { content: '✓'; color: var(--orange); flex-shrink: 0; margin-top: 2px; }
+.ci.no-item::before { content: '✕'; color: var(--text3); flex-shrink: 0; margin-top: 2px; }
+
+.ci .lang-pt { display: none; }
+
+/* ============================================================
+   PRICING
+   ============================================================ */
+.pricing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  margin-top: 64px;
+}
+
+.pricing-card {
+  background: var(--surface);
+  padding: 52px 44px;
+  position: relative;
+  overflow: hidden;
+  transition: background 0.3s;
+}
+
+.pricing-card:hover { background: var(--surface2); }
+
+.pricing-card.featured {
+  background: var(--surface2);
+}
+
+.pricing-card.featured::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--orange), var(--orange2));
+}
+
+.pricing-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+
+.pricing-label.muted { color: var(--text3); }
+.pricing-label.orange { color: var(--orange); }
+
+.pricing-label .lang-pt { display: none; }
+
+.pricing-name {
+  font-family: var(--cond);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.pricing-name-sub {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  margin-bottom: 36px;
+}
+
+.pricing-name-sub .lang-pt { display: none; }
+
+.pricing-amount {
+  font-family: var(--cond);
+  font-size: 72px;
+  font-weight: 900;
+  color: var(--orange);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.pricing-period {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--text3);
+  text-transform: uppercase;
+  margin-bottom: 40px;
+}
+
+.pricing-period .lang-pt { display: none; }
+
+.pricing-items {
+  list-style: none;
+  margin-bottom: 44px;
+}
+
+.pricing-items li {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text2);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  line-height: 1.55;
+}
+
+.pricing-items li::before {
+  content: '→';
+  color: var(--orange);
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.pricing-items li .lang-pt { display: none; }
+
+.pricing-disclaimer {
+  background: var(--deep);
+  border: 1px solid var(--border);
+  padding: 28px 32px;
+  margin-top: 2px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text3);
+  line-height: 1.65;
+}
+
+.pricing-disclaimer .lang-pt { display: none; }
+
+/* ============================================================
+   COMPARE
+   ============================================================ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  background: var(--border);
+  margin-top: 64px;
+}
+
+.compare-col {
+  background: var(--surface);
+  padding: 44px 40px;
+}
+
+.compare-col.hlm {
+  background: var(--surface2);
+  position: relative;
+  overflow: hidden;
+}
+
+.compare-col.hlm::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--orange), transparent);
+}
+
+.compare-head {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border2);
+}
+
+.compare-head.muted { color: var(--text3); }
+.compare-head.orange { color: var(--orange); }
+
+.compare-head .lang-pt { display: none; }
+
+.compare-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+  font-size: 12px;
+}
+
+.compare-row .attr {
+  color: var(--text3);
+}
+
+.compare-row .val { color: var(--text2); }
+.compare-row .val.hot { color: var(--orange); font-weight: 500; }
+
+.compare-row .attr .lang-pt,
+.compare-row .val .lang-pt { display: none; }
+
+/* ============================================================
+   CLOSING
+   ============================================================ */
+.closing {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.closing::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 100% 80% at 50% 0%, rgba(255,85,0,0.07) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.closing-bg-text {
+  position: absolute;
+  bottom: -60px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--cond);
+  font-size: clamp(80px, 14vw, 200px);
+  font-weight: 900;
+  white-space: nowrap;
+  color: rgba(255,85,0,0.025);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  user-select: none;
+  pointer-events: none;
+}
+
+.closing-inner {
+  position: relative;
+  z-index: 2;
+  padding: 120px 0;
+}
+
+.closing-tag {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--orange);
+  text-transform: uppercase;
+  margin-bottom: 36px;
+  display: block;
+}
+
+.closing-tag .lang-pt { display: none; }
+
+.closing-headline {
+  font-family: var(--cond);
+  font-size: clamp(44px, 7vw, 96px);
+  font-weight: 900;
+  line-height: 0.9;
+  text-transform: uppercase;
+  color: #fff;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.closing-headline .orange { color: var(--orange); }
+.closing-headline .lang-pt { display: none; }
+
+.closing-sub {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text3);
+  margin-bottom: 60px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.65;
+}
+
+.closing-sub .lang-pt { display: none; }
+
+.closing-ctas {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 80px;
+}
+
+.closing-divider {
+  width: 60px; height: 1px;
+  background: var(--orange);
+  margin: 0 auto 40px;
+  opacity: 0.4;
+}
+
+.closing-statement {
+  font-family: var(--cond);
+  font-size: clamp(24px, 4vw, 48px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: #fff;
+  line-height: 1.05;
+}
+
+.closing-statement .orange { color: var(--orange); }
+.closing-statement .lang-pt { display: none; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  padding: 32px 0;
+  border-top: 1px solid var(--border);
+  background: var(--black);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-copy {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+}
+
+.footer-sys {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--text3);
+}
+
+/* ============================================================
+   GLITCH EFFECT (hero headline)
+   ============================================================ */
+@keyframes glitch1 {
+  0%, 94%, 100% { transform: none; clip-path: none; }
+  95%  { transform: translate(-2px, 0); clip-path: inset(20% 0 60% 0); }
+  96%  { transform: translate(2px, 0); clip-path: inset(70% 0 5% 0); }
+  97%  { transform: none; clip-path: none; }
+}
+
+.hero-headline:hover {
+  animation: glitch1 0.3s steps(1) forwards;
+}
+
+/* ============================================================
+   TICKER TAPE
+   ============================================================ */
+.ticker {
+  background: var(--deep);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.ticker-inner {
+  display: flex;
+  gap: 0;
+  animation: tickerMove 30s linear infinite;
+  white-space: nowrap;
+}
+
+.ticker-item {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--text3);
+  text-transform: uppercase;
+  padding: 0 32px;
+  flex-shrink: 0;
+}
+
+.ticker-item span { color: var(--orange); }
+
+@keyframes tickerMove {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ============================================================
+   PROGRESS INDICATOR
+   ============================================================ */
+#progress {
+  position: fixed;
+  top: 60px; left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--orange), var(--orange2));
+  z-index: 199;
+  width: 0%;
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px var(--orange);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+  .hero-descriptor { grid-template-columns: 1fr; gap: 24px; }
+  .hero-metrics { grid-template-columns: 1fr 1fr; }
+  .problem-grid { grid-template-columns: 1fr; }
+  .system-cols { grid-template-columns: 1fr; }
+  .layer { grid-template-columns: 1fr; }
+  .layer-side { flex-direction: row; align-items: center; border-right: none; border-bottom: 1px solid var(--border); }
+  .fin-grid { grid-template-columns: 1fr; }
+  .client-cols { grid-template-columns: 1fr; }
+  .pricing-grid { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .arch-sources { grid-template-columns: 1fr 1fr; }
+  .arch-outputs { grid-template-columns: 1fr; }
+  .container { padding: 0 20px; }
+  .arch-wrap { padding: 28px 20px; }
+  .nav-links { display: none; }
+  #lang-toggle { bottom: 16px; right: 16px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+
+<!-- PROGRESS BAR -->
+<div id="progress"></div>
+
+<!-- LANGUAGE TOGGLE -->
+<div id="lang-toggle">
+  <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" id="btn-pt" onclick="setLang('pt')">PT</button>
+</div>
+
+<!-- ============================================================
+     LOADING SCREEN
+     ============================================================ -->
+<div id="loader">
+  <div class="loader-scanlines"></div>
+
+  <div class="loader-corner tl">HIGHLVLMKT / GROWTH ENGINEERING CO.</div>
+  <div class="loader-corner tr">SYSTEM BOOT SEQUENCE v2.4<br>PORTUGAL — EU</div>
+  <div class="loader-corner bl">© 2025 HIGHLVLMKT</div>
+  <div class="loader-corner br">INITIALIZING...</div>
+
+  <div class="loader-content">
+    <div class="loader-badge">⬡ Proprietary System — Authorized Access Only</div>
+
+    <div class="loader-title">
+      HLM<br>
+      <span>PREDICTABLE</span><br>
+      REVENUE OS™
+    </div>
+
+    <div class="loader-sub">Growth Engineering Infrastructure — HighLevelMkt</div>
+
+    <div class="loader-bar-wrap">
+      <div class="loader-bar-fill"></div>
+    </div>
+
+    <div class="loader-status">
+      <div class="loader-status-inner">
+        <div style="height:16px;line-height:16px;">INITIALIZING DATA LAYER...</div>
+        <div style="height:16px;line-height:16px;">LOADING ACQUISITION ARCHITECTURE...</div>
+        <div style="height:16px;line-height:16px;">CALIBRATING REVENUE INTELLIGENCE...</div>
+        <div style="height:16px;line-height:16px;">SYSTEM READY ✓</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     NAV
+     ============================================================ -->
+<nav id="nav">
+  <div class="nav-left">
+    <a href="#" class="nav-logo">High<span>Level</span>Mkt</a>
+    <div class="nav-sep"></div>
+    <span class="nav-system lang-en">Predictable Revenue OS™</span>
+    <span class="nav-system lang-pt" style="display:none;">OS de Receita Previsível™</span>
+  </div>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#problem"><span class="lang-en">Problem</span><span class="lang-pt" style="display:none;">Problema</span></a></li>
+      <li><a href="#system"><span class="lang-en">System</span><span class="lang-pt" style="display:none;">Sistema</span></a></li>
+      <li><a href="#architecture"><span class="lang-en">Architecture</span><span class="lang-pt" style="display:none;">Arquitectura</span></a></li>
+      <li><a href="#pricing"><span class="lang-en">Investment</span><span class="lang-pt" style="display:none;">Investimento</span></a></li>
+    </ul>
+    <a href="#contact" class="nav-cta">
+      <span class="lang-en">Book Strategy Call</span>
+      <span class="lang-pt" style="display:none;">Agendar Chamada</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ============================================================
+     HERO
+     ============================================================ -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+
+      <div class="hero-tag">
+        <span class="hero-tag-dot"></span>
+        <span class="lang-en">Proprietary Growth Engineering System — HighLevelMkt</span>
+        <span class="lang-pt" style="display:none;">Sistema Proprietário de Engenharia de Crescimento — HighLevelMkt</span>
+      </div>
+
+      <h1 class="hero-headline">
+        <span class="lang-en">PREDICTABLE<br><span class="outline">REVENUE</span><br><span class="orange">INFRASTRUCTURE</span></span>
+        <span class="lang-pt" style="display:none;">INFRAESTRUTURA<br><span class="outline">DE RECEITA</span><br><span class="orange">PREVISÍVEL</span></span>
+      </h1>
+
+      <div class="hero-descriptor">
+        <div>
+          <p class="hero-desc-text">
+            <span class="lang-en">The HLM Predictable Revenue OS™ is not a marketing campaign. It is a multi-layer acquisition infrastructure engineered to generate predictable, scalable, and measurable revenue — built on real data, engineering logic, and complete financial control.</span>
+            <span class="lang-pt" style="display:none;">O HLM Predictable Revenue OS™ não é uma campanha de marketing. É uma infraestrutura de aquisição multi-camada, construída para gerar receita previsível, escalável e mensurável — com dados reais, lógica de engenharia e controlo financeiro completo.</span>
+          </p>
+        </div>
+        <div class="hero-right">
+          <div class="hero-ctas">
+            <a href="#contact" class="btn-mag btn-primary-mag">
+              <div class="btn-mag-inner">
+                <span class="lang-en">Book Strategic Assessment</span>
+                <span class="lang-pt" style="display:none;">Agendar Avaliação Estratégica</span>
+              </div>
+            </a>
+            <a href="#system" class="btn-mag btn-ghost-mag">
+              <div class="btn-mag-inner">
+                <span class="lang-en">Explore System</span>
+                <span class="lang-pt" style="display:none;">Explorar Sistema</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-metrics">
+        <div class="metric">
+          <div class="metric-num" data-count="4" data-suffix="">0</div>
+          <div class="metric-label">
+            <span class="lang-en">System Layers</span>
+            <span class="lang-pt" style="display:none;">Camadas do Sistema</span>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">90D</div>
+          <div class="metric-label">
+            <span class="lang-en">Revenue Forecast</span>
+            <span class="lang-pt" style="display:none;">Previsão de Receita</span>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">€1K</div>
+          <div class="metric-label">
+            <span class="lang-en">Infrastructure Setup</span>
+            <span class="lang-pt" style="display:none;">Setup de Infraestrutura</span>
+          </div>
+        </div>
+        <div class="metric">
+          <div class="metric-num">€750</div>
+          <div class="metric-label">
+            <span class="lang-en">Monthly Management</span>
+            <span class="lang-pt" style="display:none;">Gestão Mensal</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-inner">
+    <span class="ticker-item">Data Infrastructure Engineering <span>→</span></span>
+    <span class="ticker-item">Multi-Channel Acquisition Architecture <span>→</span></span>
+    <span class="ticker-item">Revenue Intelligence Dashboard <span>→</span></span>
+    <span class="ticker-item">Optimization & Scaling Protocol <span>→</span></span>
+    <span class="ticker-item">Predictable Revenue OS™ <span>→</span></span>
+    <span class="ticker-item">CAC Control <span>→</span></span>
+    <span class="ticker-item">90-Day Growth Forecasting <span>→</span></span>
+    <span class="ticker-item">Growth Engineering Co. <span>→</span></span>
+    <span class="ticker-item">Data Infrastructure Engineering <span>→</span></span>
+    <span class="ticker-item">Multi-Channel Acquisition Architecture <span>→</span></span>
+    <span class="ticker-item">Revenue Intelligence Dashboard <span>→</span></span>
+    <span class="ticker-item">Optimization & Scaling Protocol <span>→</span></span>
+    <span class="ticker-item">Predictable Revenue OS™ <span>→</span></span>
+    <span class="ticker-item">CAC Control <span>→</span></span>
+    <span class="ticker-item">90-Day Growth Forecasting <span>→</span></span>
+    <span class="ticker-item">Growth Engineering Co. <span>→</span></span>
+  </div>
+</div>
+
+<!-- ============================================================
+     PROBLEM
+     ============================================================ -->
+<section class="section" id="problem">
+  <div class="container">
+    <div class="eyebrow reveal">
+      <span class="lang-en">02 — Structural Diagnosis</span>
+      <span class="lang-pt" style="display:none;">02 — Diagnóstico Estrutural</span>
+    </div>
+
+    <div class="section-title reveal">
+      <span class="lang-en">THE PROBLEM<br><span class="outline">MOST BUSINESSES</span><br><span class="orange">IGNORE</span></span>
+      <span class="lang-pt" style="display:none;">O PROBLEMA QUE<br><span class="outline">A MAIORIA</span><br><span class="orange">IGNORA</span></span>
+    </div>
+
+    <div class="section-title-sub reveal">
+      <span class="lang-en">Why traditional agencies structurally fail to produce predictable revenue</span>
+      <span class="lang-pt" style="display:none;">Por que as agências tradicionais falham estruturalmente em produzir receita previsível</span>
+    </div>
+
+    <div class="problem-grid stagger">
+
+      <div class="problem-cell reveal" data-n="01">
+        <div class="problem-cell-accent"></div>
+        <h3><span class="lang-en">Agencies fail by design</span><span class="lang-pt" style="display:none;">Agências falham por design</span></h3>
+        <p>
+          <span class="lang-en">The business model of most agencies incentivizes service perpetuation, not the generation of measurable financial results. Reporting structures focus on vanity metrics — impressions, clicks, CTR — that don't directly translate into revenue.</span>
+          <span class="lang-pt" style="display:none;">O modelo de negócio da maioria das agências incentiva a perpetuação do serviço, não a geração de resultados financeiros mensuráveis. As estruturas de reporting focam-se em métricas de vaidade que não se traduzem directamente em receita.</span>
+        </p>
+      </div>
+
+      <div class="problem-cell reveal" data-n="02">
+        <div class="problem-cell-accent"></div>
+        <h3><span class="lang-en">Isolated ads create instability</span><span class="lang-pt" style="display:none;">Anúncios isolados criam instabilidade</span></h3>
+        <p>
+          <span class="lang-en">A campaign without structured TOFU/MOFU/BOFU, without architected retargeting, and without sequencing logic creates temporary performance spikes — not sustained growth. Revenue needs architecture, not execution.</span>
+          <span class="lang-pt" style="display:none;">Uma campanha sem TOFU/MOFU/BOFU estruturado e sem lógica de sequenciação cria picos de performance temporários — não crescimento sustentado. A receita precisa de arquitectura, não de execução avulsa.</span>
+        </p>
+      </div>
+
+      <div class="problem-cell reveal" data-n="03">
+        <div class="problem-cell-accent"></div>
+        <h3><span class="lang-en">No data = no predictability</span><span class="lang-pt" style="display:none;">Sem dados = sem previsibilidade</span></h3>
+        <p>
+          <span class="lang-en">Without a validated Pixel, active CAPI, configured GA4, and synchronized CRM, every campaign decision is an estimate. Unpredictability is not bad luck — it is the direct consequence of poor data infrastructure.</span>
+          <span class="lang-pt" style="display:none;">Sem Pixel validado, CAPI activo, GA4 configurado e CRM sincronizado, cada decisão de campanha é uma estimativa. Imprevisibilidade não é má sorte — é consequência directa de má infraestrutura de dados.</span>
+        </p>
+      </div>
+
+      <div class="problem-cell reveal" data-n="04">
+        <div class="problem-cell-accent"></div>
+        <h3><span class="lang-en">Activity ≠ Revenue Engineering</span><span class="lang-pt" style="display:none;">Actividade ≠ Engenharia de Receita</span></h3>
+        <p>
+          <span class="lang-en">Publishing content, launching campaigns, and generating traffic are activities. Revenue engineering is the systematic process of converting media investment into measurable revenue, with controlled CAC, protected margins, and predictable growth.</span>
+          <span class="lang-pt" style="display:none;">Publicar conteúdo, lançar campanhas e gerar tráfego são actividades. Engenharia de receita é o processo sistemático de converter investimento em media em receita mensurável, com CAC controlado e crescimento previsível.</span>
+        </p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     SYSTEM INTRO
+     ============================================================ -->
+<section class="section system-intro" id="system">
+  <div class="container">
+
+    <div class="eyebrow reveal">
+      <span class="lang-en">03 — Proprietary System</span>
+      <span class="lang-pt" style="display:none;">03 — Sistema Proprietário</span>
+    </div>
+
+    <div class="section-title reveal">
+      <span class="lang-en">HLM PREDICTABLE<br><span class="outline">REVENUE</span> <span class="orange">OS™</span></span>
+      <span class="lang-pt" style="display:none;">HLM PREDICTABLE<br><span class="outline">REVENUE</span> <span class="orange">OS™</span></span>
+    </div>
+
+    <div class="section-title-sub reveal">
+      <span class="lang-en">This is not marketing management. This is revenue infrastructure deployment.</span>
+      <span class="lang-pt" style="display:none;">Isto não é gestão de marketing. É deployment de infraestrutura de receita.</span>
+    </div>
+
+    <div class="system-cols">
+      <div class="reveal-left">
+        <div class="system-badge">
+          <div class="system-badge-title">HLM Revenue OS™</div>
+          <div class="system-badge-sub">
+            <span class="lang-en">Closed-Loop Acquisition Infrastructure</span>
+            <span class="lang-pt" style="display:none;">Infraestrutura de Aquisição em Ciclo Fechado</span>
+          </div>
+        </div>
+
+        <p style="font-size:15px; color:var(--text2); line-height:1.75; margin-bottom:20px;">
+          <span class="lang-en">The HLM Predictable Revenue OS™ is a proprietary growth engineering system, developed and operated exclusively by HighLevelMkt. It is not campaign management. It is acquisition infrastructure deployment — built layer by layer, calibrated on real data, and optimized to generate predictable long-term revenue.</span>
+          <span class="lang-pt" style="display:none;">O HLM Predictable Revenue OS™ é um sistema proprietário de engenharia de crescimento, desenvolvido e operado exclusivamente pela HighLevelMkt. Não é gestão de campanhas. É deployment de infraestrutura de aquisição — construída camada por camada, calibrada por dados reais, e optimizada para gerar receita previsível a longo prazo.</span>
+        </p>
+
+        <p style="font-size:15px; color:var(--text2); line-height:1.75;">
+          <span class="lang-en">The system integrates data infrastructure, multi-channel acquisition architecture, revenue intelligence, and optimization protocols into a single closed operational model — designed specifically for construction and high-ticket service companies.</span>
+          <span class="lang-pt" style="display:none;">O sistema integra infraestrutura de dados, arquitectura de aquisição multi-canal, inteligência de receita e protocolos de optimização num único modelo operacional fechado — desenhado especificamente para empresas de construção e serviços de alto valor.</span>
+        </p>
+      </div>
+
+      <div class="reveal-right">
+        <div class="positioning-card">
+          <div class="positioning-title">
+            <span class="lang-en">Positioning Declaration</span>
+            <span class="lang-pt" style="display:none;">Declaração de Posicionamento</span>
+          </div>
+
+          <div style="font-family:var(--cond); font-size:20px; font-weight:700; color:#fff; text-transform:uppercase; letter-spacing:0.02em; margin-bottom:24px; line-height:1.2;">
+            <span class="lang-en">HighLevelMkt is not a marketing agency.<br><span style="color:var(--orange);">It is a Growth Engineering Company.</span></span>
+            <span class="lang-pt" style="display:none;">HighLevelMkt não é uma agência de marketing.<br><span style="color:var(--orange);">É uma Growth Engineering Company.</span></span>
+          </div>
+
+          <div class="positioning-list">
+            <div class="positioning-item">
+              <span class="lang-en">Closed, proprietary operational model — exclusively HighLevelMkt</span>
+              <span class="lang-pt" style="display:none;">Modelo operacional fechado e proprietário — exclusivamente HighLevelMkt</span>
+            </div>
+            <div class="positioning-item">
+              <span class="lang-en">Architected for construction and high-ticket service sectors</span>
+              <span class="lang-pt" style="display:none;">Arquitectado para construção e serviços de alto valor</span>
+            </div>
+            <div class="positioning-item">
+              <span class="lang-en">Revenue-oriented, not activity metrics-oriented</span>
+              <span class="lang-pt" style="display:none;">Orientado a receita, não a métricas de actividade</span>
+            </div>
+            <div class="positioning-item">
+              <span class="lang-en">Full financial visibility from Day 1 of deployment</span>
+              <span class="lang-pt" style="display:none;">Visibilidade financeira completa desde o Dia 1 do deployment</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     LAYERS
+     ============================================================ -->
+<section class="section" id="architecture">
+  <div class="container">
+
+    <div class="eyebrow reveal">
+      <span class="lang-en">04 — System Architecture</span>
+      <span class="lang-pt" style="display:none;">04 — Arquitectura do Sistema</span>
+    </div>
+
+    <div class="section-title reveal">
+      <span class="lang-en">FOUR OPERATIONAL<br><span class="orange">LAYERS</span></span>
+      <span class="lang-pt" style="display:none;">QUATRO CAMADAS<br><span class="orange">OPERACIONAIS</span></span>
+    </div>
+
+    <div class="section-title-sub reveal">
+      <span class="lang-en">Full system architecture breakdown — engineering-focused operational design</span>
+      <span class="lang-pt" style="display:none;">Breakdown completo da arquitectura — design operacional de engenharia</span>
+    </div>
+
+    <div class="layers stagger">
+
+      <div class="layer reveal">
+        <div class="layer-side">
+          <div class="layer-num">01</div>
+          <div class="layer-tag"><span class="lang-en">Data Layer</span><span class="lang-pt" style="display:none;">Camada de Dados</span></div>
+        </div>
+        <div class="layer-body">
+          <div class="layer-title"><span class="lang-en">Data Infrastructure Engineering</span><span class="lang-pt" style="display:none;">Engenharia de Infraestrutura de Dados</span></div>
+          <div class="layer-desc">
+            <span class="lang-en">The foundation of the system. No optimization, budget, or scalability decision is made without the data layer being fully operational and validated. Includes server-side Meta Pixel with Conversions API (CAPI), eliminating data loss from ad-blockers and iOS. GA4 configured with custom conversion events mapped to the acquisition funnel. CRM synchronization for end-to-end revenue attribution.</span>
+            <span class="lang-pt" style="display:none;">A base do sistema. Nenhuma decisão é tomada sem que a camada de dados esteja completamente operacional. Inclui Meta Pixel com Conversions API em modo server-side, eliminando perda de dados causada por ad-blockers e iOS. GA4 com eventos customizados. Sincronização CRM para atribuição de receita end-to-end.</span>
+          </div>
+          <div class="tags-row">
+            <span class="tech-tag">Meta Pixel</span>
+            <span class="tech-tag">Conversions API</span>
+            <span class="tech-tag">Server-Side Events</span>
+            <span class="tech-tag">GA4 Custom Events</span>
+            <span class="tech-tag">CRM Sync</span>
+            <span class="tech-tag">Attribution Mapping</span>
+            <span class="tech-tag">iOS Signal Recovery</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer reveal">
+        <div class="layer-side">
+          <div class="layer-num">02</div>
+          <div class="layer-tag"><span class="lang-en">Acquisition Layer</span><span class="lang-pt" style="display:none;">Camada de Aquisição</span></div>
+        </div>
+        <div class="layer-body">
+          <div class="layer-title"><span class="lang-en">Multi-Channel Acquisition Architecture</span><span class="lang-pt" style="display:none;">Arquitectura de Aquisição Multi-Canal</span></div>
+          <div class="layer-desc">
+            <span class="lang-en">Acquisition is not a campaign — it is an architecture. The system operates on a structured TOFU/MOFU/BOFU model with differentiated investment per funnel stage. Simultaneously active channels: Meta Ads (prospecting + sequential retargeting), Google Search (purchase intent capture), YouTube Ads (authority content and audience warming). Each channel fulfills a specific functional role — they are not independent campaigns, they are components of a closed system.</span>
+            <span class="lang-pt" style="display:none;">Aquisição não é uma campanha — é uma arquitectura. O sistema opera em modelo TOFU/MOFU/BOFU com investimentos diferenciados por fase. Canais activos em simultâneo: Meta Ads, Google Search, YouTube Ads. Cada canal cumpre um papel funcional específico dentro da arquitectura — são componentes de um sistema fechado.</span>
+          </div>
+          <div class="tags-row">
+            <span class="tech-tag">TOFU/MOFU/BOFU</span>
+            <span class="tech-tag">Meta Ads</span>
+            <span class="tech-tag">Google Search</span>
+            <span class="tech-tag">YouTube Ads</span>
+            <span class="tech-tag">Sequential Retargeting</span>
+            <span class="tech-tag">Audience Architecture</span>
+            <span class="tech-tag">Funnel Sync</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer reveal">
+        <div class="layer-side">
+          <div class="layer-num">03</div>
+          <div class="layer-tag"><span class="lang-en">Intelligence Layer</span><span class="lang-pt" style="display:none;">Camada de Inteligência</span></div>
+        </div>
+        <div class="layer-body">
+          <div class="layer-title"><span class="lang-en">Revenue Intelligence & Profit Monitoring</span><span class="lang-pt" style="display:none;">Inteligência de Receita e Monitorização de Margem</span></div>
+          <div class="layer-desc">
+            <span class="lang-en">Every euro invested in media has a calculated acquisition cost and a direct relationship with contribution margin. The system monitors in real time: CPL (Cost per Lead) by channel and audience segment, real CAC with multi-touch attribution, margin tracking per product/service, revenue projection based on lead volume and historical conversion rate, and ROI visibility with 30, 60, and 90-day forecasting.</span>
+            <span class="lang-pt" style="display:none;">Cada euro investido em media tem um custo de aquisição calculado e uma relação directa com a margem. O sistema monitoriza em tempo real: CPL por canal e segmento, CAC real com atribuição multi-touch, tracking de margem, projecção de receita e visibilidade de ROI com forecasting a 30, 60 e 90 dias.</span>
+          </div>
+          <div class="tags-row">
+            <span class="tech-tag">CPL Tracking</span>
+            <span class="tech-tag">CAC Calculation</span>
+            <span class="tech-tag">Margin Analysis</span>
+            <span class="tech-tag">Multi-Touch Attribution</span>
+            <span class="tech-tag">Revenue Forecasting</span>
+            <span class="tech-tag">90-Day Projection</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer reveal">
+        <div class="layer-side">
+          <div class="layer-num">04</div>
+          <div class="layer-tag"><span class="lang-en">Optimization Layer</span><span class="lang-pt" style="display:none;">Camada de Optimização</span></div>
+        </div>
+        <div class="layer-body">
+          <div class="layer-title"><span class="lang-en">Optimization & Scaling Protocol</span><span class="lang-pt" style="display:none;">Protocolo de Optimização e Escalabilidade</span></div>
+          <div class="layer-desc">
+            <span class="lang-en">Optimization is not reactive — it is systematic and rule-based. The protocol defines performance thresholds that trigger budget decisions: when to scale, how much to scale, when to pause, and when to redirect investment. Scaling triggers based on CAC vs. average ticket, budget distribution rules by segment performance, and weekly review cycles with efficiency analysis by channel, creative, and audience.</span>
+            <span class="lang-pt" style="display:none;">A optimização não é reactiva — é sistemática e baseada em regras pré-definidas. O protocolo define thresholds de performance que activam decisões de orçamento: quando escalar, quanto escalar, quando pausar e quando redirecionar investimento. Intervalos de revisão semanais com análise de eficiência por canal, criativo e audiência.</span>
+          </div>
+          <div class="tags-row">
+            <span class="tech-tag">Rule-Based Optimization</span>
+            <span class="tech-tag">Scaling Thresholds</span>
+            <span class="tech-tag">Budget Automation</span>
+            <span class="tech-tag">Performance Triggers</span>
+            <span class="tech-tag">Weekly Review</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     ARCHITECTURE DIAGRAM
+     ============================================================ -->
+<section class="section arch-section">
+  <div class="container">
+
+    <div class="eyebrow reveal">
+      <span class="lang-en">05 — System Blueprint</span>
+      <span class="lang-pt" style="display:none;">05 — Blueprint do Sistema</span>
+    </div>
+
+    <div class="section-title reveal">
+      <span class="lang-en">CLOSED-LOOP<br><span class="orange">ARCHITECTURE</span></span>
+      <span class="lang-pt" style="display:none;">ARQUITECTURA<br><span class="orange">EM CICLO FECHADO</span></span>
+    </div>
+
+    <div class="arch-wrap reveal">
+      <div class="arch-watermark">HLM REVENUE OS™ v2.4 — ARCHITECTURE BLUEPRINT</div>
+
+      <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; color:var(--text3); text-transform:uppercase; text-align:center; margin-bottom:10px;">[ TRAFFIC SOURCES — TOFU ]</div>
+      <div class="arch-sources">
+        <div class="arch-node">
+          <span class="arch-node-label">Channel 01</span>
+          <span class="arch-node-name">Meta Ads — Prospecting</span>
+        </div>
+        <div class="arch-node">
+          <span class="arch-node-label">Channel 02</span>
+          <span class="arch-node-name">Google Search — Intent</span>
+        </div>
+        <div class="arch-node">
+          <span class="arch-node-label">Channel 03</span>
+          <span class="arch-node-name">YouTube — Authority</span>
+        </div>
+        <div class="arch-node">
+          <span class="arch-node-label">Channel 04</span>
+          <span class="arch-node-name">Retargeting — MOFU/BOFU</span>
+        </div>
+      </div>
+
+      <div class="arch-arrow">↓</div>
+
+      <div class="arch-main-node">
+        <div class="arch-main-label">LAYER 01</div>
+        <div class="arch-main-title">
+          <span class="lang-en">Data Infrastructure Layer</span>
+          <span class="lang-pt" style="display:none;">Camada de Infraestrutura de Dados</span>
+        </div>
+        <div class="arch-main-detail">Meta Pixel → Conversions API (Server-Side) → GA4 Custom Events → CRM Attribution Sync</div>
+      </div>
+
+      <div class="arch-arrow">↓</div>
+
+      <div class="arch-main-node">
+        <div class="arch-main-label">LAYER 02</div>
+        <div class="arch-main-title">
+          <span class="lang-en">Multi-Channel Acquisition Architecture</span>
+          <span class="lang-pt" style="display:none;">Arquitectura de Aquisição Multi-Canal</span>
+        </div>
+        <div class="arch-main-detail">TOFU Awareness → MOFU Consideration → BOFU Conversion → Sequential Retargeting Logic</div>
+      </div>
+
+      <div class="arch-arrow">↓</div>
+
+      <div class="arch-main-node">
+        <div class="arch-main-label">LAYER 03</div>
+        <div class="arch-main-title">
+          <span class="lang-en">Revenue Intelligence Dashboard</span>
+          <span class="lang-pt" style="display:none;">Dashboard de Inteligência de Receita</span>
+        </div>
+        <div class="arch-main-detail">CPL → CAC → Margin Tracking → Revenue Forecasting → 30/60/90-Day Projection</div>
+      </div>
+
+      <div class="arch-arrow">↓</div>
+
+      <div class="arch-main-node">
+        <div class="arch-main-label">LAYER 04</div>
+        <div class="arch-main-title">
+          <span class="lang-en">Rule-Based Optimization Engine → Scaling Protocol</span>
+          <span class="lang-pt" style="display:none;">Motor de Optimização por Regras → Protocolo de Escalabilidade</span>
+        </div>
+        <div class="arch-main-detail">Performance Triggers → Budget Scaling Rules → Weekly Audit Protocol → Iterative Recalibration</div>
+      </div>
+
+      <div class="arch-arrow">↓</div>
+
+      <div style="font-family:var(--mono); font-size:9px; letter-spacing:0.2em; color:var(--text3); text-transform:uppercase; text-align:center; margin-bottom:10px;">[ SYSTEM OUTPUTS ]</div>
+      <div class="arch-outputs">
+        <div class="arch-output-node">
+          <div class="arch-output-title"><span class="lang-en">Predictable Revenue</span><span class="lang-pt" style="display:none;">Receita Previsível</span></div>
+          <div class="arch-output-sub"><span class="lang-en">Controlled growth cycle</span><span class="lang-pt" style="display:none;">Ciclo de crescimento controlado</span></div>
+        </div>
+        <div class="arch-output-node">
+          <div class="arch-output-title"><span class="lang-en">Controlled CAC</span><span class="lang-pt" style="display:none;">CAC Controlado</span></div>
+          <div class="arch-output-sub"><span class="lang-en">Decreasing over 90 days</span><span class="lang-pt" style="display:none;">Decrescente ao longo de 90 dias</span></div>
+        </div>
+        <div class="arch-output-node">
+          <div class="arch-output-title"><span class="lang-en">Sustained Scalability</span><span class="lang-pt" style="display:none;">Escalabilidade Sustentada</span></div>
+          <div class="arch-output-sub"><span class="lang-en">Data-verified expansion</span><span class="lang-pt" style="display:none;">Expansão verificada por dados</span></div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:14px; color:var(--text2); line-height:1.75; max-width:760px; margin-top:32px;">
+      <span class="lang-en">The system operates in a closed loop: data generated by the revenue intelligence layer directly feeds back into the optimization layer, which recalibrates the acquisition architecture based on real performance — not estimates. Each cycle iteration increases efficiency and reduces acquisition cost.</span>
+      <span class="lang-pt" style="display:none;">O sistema opera em ciclo fechado: os dados gerados pela camada de inteligência de receita retroalimentam directamente a camada de optimização, que recalibra a arquitectura de aquisição com base em performance real — não em estimativas. Cada iteração aumenta a eficiência e reduz o custo de aquisição.</span>
+    </p>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     FINANCIAL
+     ============================================================ -->
+<section class="section">
+  <div class="container">
+
+    <div class="eyebrow reveal">
+      <span class="lang-en">06 — Financial Model</span>
+      <span class="lang-pt" style="display:none;">06 — Modelo Financeiro</span>
+    </div>
+
+    <div class="section-title reveal">
+      <span class="lang-en">FINANCIAL<br><span class="orange">PREDICTABILITY</span> MODEL</span>
+      <span class="lang-pt" style="display:none;">MODELO DE<br><span class="orange">PREVISIBILIDADE</span> FINANCEIRA</span>
+    </div>
+
+    <div class="section-title-sub reveal">
+      <span class="lang-en">Revenue forecasting logic — 90-day projection framework</span>
+      <span class="lang-pt" style="display:none;">Lógica de forecasting de receita — framework de projecção a 90 dias</span>
+    </div>
+
+    <div class="fin-grid">
+      <div class="reveal-left">
+        <p style="font-size:15px; color:var(--text2); line-height:1.75; margin-bottom:20px;">
+          <span class="lang-en">Revenue predictability is not a promise — it is the logical outcome of a system with clean data, calculated CAC, and controllable lead volume. The following forecasting logic is used to define investment targets and project 90-day growth.</span>
+          <span class="lang-pt" style="display:none;">A previsibilidade de receita não é uma promessa — é o resultado lógico de um sistema com dados limpos, CAC calculado e volume de leads controlável. A lógica de forecasting é usada para definir metas de investimento e projectar crescimento a 90 dias.</span>
+        </p>
+        <p style="font-size:15px; color:var(--text2); line-height:1.75;">
+          <span class="lang-en">Each model variable is measurable and controllable. The system allows simulation of the impact of budget adjustments, conversion rate improvements, and average ticket variations before any scalability decision.</span>
+          <span class="lang-pt" style="display:none;">Cada variável do modelo é mensurável e controlável. O sistema permite simular o impacto de ajustes orçamentais, melhorias de taxa de conversão e variações de ticket médio antes de qualquer decisão de escalabilidade.</span>
+        </p>
+      </div>
+      <div class="reveal-right">
+        <div class="code-block">
+          <span class="kw">CAC</span> = Total Media Spend ÷ Clients Acquired<br>
+          <span class="kw">CPL</span> = Total Media Spend ÷ Leads Generated<br>
+          <span class="kw">L2C</span> = Clients Acquired ÷ Leads Generated<br>
+          <br>
+          <span class="cm">// BREAK-EVEN</span><br>
+          <span class="kw">B/E</span> = (€1,000 + €750) ÷ Avg. Margin<br>
+          <br>
+          <span class="cm">// 90-DAY PROJECTION</span><br>
+          <span class="kw">Leads</span> = Budget ÷ <span class="val">CPL</span><br>
+          <span class="kw">Clients</span> = Leads × <span class="val">L2C Rate</span><br>
+          <span class="kw">Revenue</span> = Clients × <span class="val">Avg Ticket</span><br>
+          <span class="kw">90D Rev</span> = Monthly Revenue × <span class="val">3</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-family:var(--mono); font-size:10px; letter-spacing:0.2em; color:var(--orange); text-transform:uppercase; margin-bottom:20px;">
+      <span class="lang-en">Illustrative Example — Construction Company / Portugal</span>
+      <span class="lang-pt" style="display:none;">Exemplo Ilustrativo — Empresa de Construção / Portugal</span>
+    </div>
+
+    <div class="fin-table-wrap reveal">
+      <table class="fin-table">
+        <thead>
+          <tr>
+            <th><span class="lang-en">Variable</span><span class="lang-pt" style="display:none;">Variável</span></th>
+            <th><span class="lang-en">Month 1</span><span class="lang-pt" style="display:none;">Mês 1</span></th>
+            <th><span class="lang-en">Month 2</span><span class="lang-pt" style="display:none;">Mês 2</span></th>
+            <th><span class="lang-en">Month 3 (90D)</span><span class="lang-pt" style="display:none;">Mês 3 (90D)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="lang-en">Media Spend</span><span class="lang-pt" style="display:none;">Investimento em Media</span></td>
+            <td>€1,000</td><td>€1,200</td><td>€1,500</td>
+          </tr>
+          <tr>
+            <td>CPL (<span class="lang-en">Cost per Lead</span><span class="lang-pt" style="display:none;">Custo por Lead</span>)</td>
+            <td>€25</td><td>€22</td><td>€19</td>
+          </tr>
+          <tr>
+            <td><span class="lang-en">Lead Volume</span><span class="lang-pt" style="display:none;">Volume de Leads</span></td>
+            <td>40</td><td>55</td><td>79</td>
+          </tr>
+          <tr>
+            <td><span class="lang-en">Lead-to-Client Rate</span><span class="lang-pt" style="display:none;">Taxa Lead→Cliente</span></td>
+            <td>10%</td><td>12%</td><td>14%</td>
+          </tr>
+          <tr>
+            <td><span class="lang-en">New Clients</span><span class="lang-pt" style="display:none;">Novos Clientes</span></td>
+            <td>4</td><td>7</td><td>11</td>
+          </tr>
+          <tr>
+            <td><span class="lang-en">Average Ticket</span><span class="lang-pt" style="display:none;">Ticket Médio</span></td>
+            <td>€8,000</td><td>€8,000</td><td>€8,000</td>
+          </tr>
+          <tr>
+            <td><span class="lang-en">Revenue Generated</span><span class="lang-pt" style="display:none;">Receita Gerada</span></td>
+            <td>€32,000</td><td>€56,000</td><td class="hot">€88,000</td>
+          </tr>
+          <tr>
+            <td><span class="lang-en">Total CAC (Media + HLM)</span><span class="lang-pt" style="display:none;">CAC Total (Media + HLM)</span></td>
+            <td>€437</td><td>€278</td><td class="hot">€204</td>
+          </tr>
+          <tr>
+            <td><span class="lang-en">ROI on Total Investment</span><span class="lang-pt" style="display:none;">ROI sobre Investimento Total</span></td>
+            <td>14.6×</td><td>20.1×</td><td class="green">27.3×</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="fin-note">
+      <span style="color:var(--orange);">
+        <span class="lang-en">Methodological Note: </span>
+        <span class="lang-pt" style="display:none;">Nota Metodológica: </span>
+      </span>
+      <span class="lang-en">Values are illustrative and based on construction sector benchmarks in Portugal. The system operates with the client's real data, and projections are recalibrated monthly based on verified performance.</span>
+      <span class="lang-pt" style="display:none;">Valores são ilustrativos e baseados em benchmarks do sector de construção em Portugal. O sistema opera com os dados reais da empresa cliente, e as projecções são recalibradas mensalmente com base em performance verificada.</span>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     IDEAL CLIENT
+     ============================================================ -->
+<section class="section" style="background:var(--surface);">
+  <div class="container">
+
+    <div class="eyebrow reveal">
+      <span class="lang-en">07 — Client Profile</span>
+      <span class="lang-pt" style="display:none;">07 — Perfil do Cliente</span>
+    </div>
+
+    <div class="section-title reveal">
+      <span class="lang-en">IDEAL CLIENT<br><span class="orange">PROFILE</span></span>
+      <span class="lang-pt" style="display:none;">PERFIL DO CLIENTE<br><span class="orange">IDEAL</span></span>
+    </div>
+
+    <div class="section-title-sub reveal">
+      <span class="lang-en">Accepted by strategic compatibility, not by volume</span>
+      <span class="lang-pt" style="display:none;">Aceites por compatibilidade estratégica, não por volume</span>
+    </div>
+
+    <div class="client-cols">
+      <div class="client-col reveal-left">
+        <div class="col-header yes">
+          <span class="lang-en">✓ Qualified Profile</span>
+          <span class="lang-pt" style="display:none;">✓ Perfil Adequado</span>
+        </div>
+        <div class="ci yes"><span class="lang-en">Construction and renovation companies with avg. ticket above €5,000</span><span class="lang-pt" style="display:none;">Empresas de construção e remodelação com ticket médio acima de €5,000</span></div>
+        <div class="ci yes"><span class="lang-en">High-ticket service providers (architecture, interior design, specialized consulting)</span><span class="lang-pt" style="display:none;">Prestadores de serviços de alto valor (arquitectura, design de interiores, consultoria especializada)</span></div>
+        <div class="ci yes"><span class="lang-en">Companies capable of €800–€1,000/month media investment</span><span class="lang-pt" style="display:none;">Empresas com capacidade de investimento de €800–€1,000/mês em media</span></div>
+        <div class="ci yes"><span class="lang-en">Data-oriented management willing to implement commercial processes</span><span class="lang-pt" style="display:none;">Gestão com orientação para dados e disposição para implementar processos comerciais</span></div>
+        <div class="ci yes"><span class="lang-en">Companies with ambition for structured growth, not just incremental traffic</span><span class="lang-pt" style="display:none;">Empresas com ambição de crescimento estruturado, não apenas tráfego incremental</span></div>
+        <div class="ci yes"><span class="lang-en">Lead follow-up capacity within 24 hours (critical operational condition)</span><span class="lang-pt" style="display:none;">Capacidade de follow-up de leads em menos de 24 horas (condição operacional crítica)</span></div>
+      </div>
+      <div class="client-col no reveal-right">
+        <div class="col-header no">
+          <span class="lang-en">✕ Disqualified Profile</span>
+          <span class="lang-pt" style="display:none;">✕ Perfil Não Adequado</span>
+        </div>
+        <div class="ci no-item"><span class="lang-en">Businesses with avg. ticket below €500 — CAC math does not support the system</span><span class="lang-pt" style="display:none;">Negócios com ticket médio abaixo de €500 — a matemática de CAC não suporta o sistema</span></div>
+        <div class="ci no-item"><span class="lang-en">Companies seeking immediate results without 90-day commitment</span><span class="lang-pt" style="display:none;">Empresas em busca de resultados imediatos sem comprometimento de 90 dias</span></div>
+        <div class="ci no-item"><span class="lang-en">Businesses without structured commercial processes or sales closing capability</span><span class="lang-pt" style="display:none;">Negócios sem processos comerciais estruturados ou capacidade de fechar vendas</span></div>
+        <div class="ci no-item"><span class="lang-en">Management averse to data, reporting or regular performance review</span><span class="lang-pt" style="display:none;">Gestão avessa a dados, reporting ou revisão regular de performance</span></div>
+        <div class="ci no-item"><span class="lang-en">Companies looking to "test" with investments below €500/month in media</span><span class="lang-pt" style="display:none;">Empresas que procuram "testar" com investimentos abaixo de €500/mês em media</span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     PRICING
+     ============================================================ -->
+<section class="section" id="pricing">
+  <div class="container">
+
+    <div class="eyebrow reveal">
+      <span class="lang-en">08 — Investment Structure</span>
+      <span class="lang-pt" style="display:none;">08 — Estrutura de Investimento</span>
+    </div>
+
+    <div class="section-title reveal">
+      <span class="lang-en">DEPLOYMENT<br><span class="orange">INVESTMENT</span></span>
+      <span class="lang-pt" style="display:none;">INVESTIMENTO DE<br><span class="orange">DEPLOYMENT</span></span>
+    </div>
+
+    <div class="section-title-sub reveal">
+      <span class="lang-en">Not a tool subscription. Not a retainer. Revenue infrastructure deployment.</span>
+      <span class="lang-pt" style="display:none;">Não é uma subscrição de ferramentas. Não é um retainer. É deployment de infraestrutura de receita.</span>
+    </div>
+
+    <div class="pricing-grid">
+      <div class="pricing-card reveal-left">
+        <div class="pricing-label muted">
+          <span class="lang-en">Phase 01 — One-Time</span>
+          <span class="lang-pt" style="display:none;">Fase 01 — Único</span>
+        </div>
+        <div class="pricing-name">Infrastructure Deployment</div>
+        <div class="pricing-name-sub">
+          <span class="lang-en">Full system infrastructure setup</span>
+          <span class="lang-pt" style="display:none;">Setup completo da infraestrutura do sistema</span>
+        </div>
+        <div class="pricing-amount">€1,000</div>
+        <div class="pricing-period">
+          <span class="lang-en">One-Time Investment</span>
+          <span class="lang-pt" style="display:none;">Investimento Único</span>
+        </div>
+        <ul class="pricing-items">
+          <li><span class="lang-en">Meta Pixel + Conversions API server-side implementation & validation</span><span class="lang-pt" style="display:none;">Implementação e validação do Meta Pixel + Conversions API (server-side)</span></li>
+          <li><span class="lang-en">GA4 configuration with custom events and mapped conversion funnel</span><span class="lang-pt" style="display:none;">Configuração do GA4 com eventos customizados e funil de conversão mapeado</span></li>
+          <li><span class="lang-en">CRM synchronization and revenue attribution architecture</span><span class="lang-pt" style="display:none;">Sincronização CRM e arquitectura de atribuição de receita</span></li>
+          <li><span class="lang-en">TOFU/MOFU/BOFU architecture structuring by channel</span><span class="lang-pt" style="display:none;">Estruturação da arquitectura TOFU/MOFU/BOFU por canal</span></li>
+          <li><span class="lang-en">Revenue Intelligence dashboard configured and operational</span><span class="lang-pt" style="display:none;">Dashboard de Revenue Intelligence configurado e operacional</span></li>
+          <li><span class="lang-en">Full data audit and tracking validation before launch</span><span class="lang-pt" style="display:none;">Auditoria completa de dados e validação de tracking antes do lançamento</span></li>
+        </ul>
+      </div>
+
+      <div class="pricing-card featured reveal-right">
+        <div class="pricing-label orange">
+          <span class="lang-en">Phase 02 — Monthly Recurring</span>
+          <span class="lang-pt" style="display:none;">Fase 02 — Recorrente Mensal</span>
+        </div>
+        <div class="pricing-name">Growth Management</div>
+        <div class="pricing-name-sub">
+          <span class="lang-en">Ongoing system operation and optimization</span>
+          <span class="lang-pt" style="display:none;">Operação contínua e optimização do sistema</span>
+        </div>
+        <div class="pricing-amount">€750</div>
+        <div class="pricing-period">
+          <span class="lang-en">Per Month — Minimum 90 Days</span>
+          <span class="lang-pt" style="display:none;">Por Mês — Mínimo 90 Dias</span>
+        </div>
+        <ul class="pricing-items">
+          <li><span class="lang-en">Operational management of multi-channel acquisition architecture</span><span class="lang-pt" style="display:none;">Gestão operacional da arquitectura de aquisição multi-canal</span></li>
+          <li><span class="lang-en">Continuous rule-based optimization on real performance data</span><span class="lang-pt" style="display:none;">Optimização contínua baseada em regras de performance e dados reais</span></li>
+          <li><span class="lang-en">Weekly performance reviews with CPL, CAC, and margin analysis</span><span class="lang-pt" style="display:none;">Revisões semanais de performance com análise CPL, CAC e margem</span></li>
+          <li><span class="lang-en">Updated monthly forecasting with 90-day revenue projection</span><span class="lang-pt" style="display:none;">Forecasting mensal actualizado com projecção de receita a 90 dias</span></li>
+          <li><span class="lang-en">Scaling protocols activated by verified performance thresholds</span><span class="lang-pt" style="display:none;">Protocolos de scaling activados por thresholds de performance verificados</span></li>
+          <li><span class="lang-en">Revenue intelligence report with strategic recommendations</span><span class="lang-pt" style="display:none;">Relatório de inteligência de receita com recomendações estratégicas</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pricing-disclaimer reveal">
+      <span style="color:var(--orange);">
+        <span class="lang-en">Important: </span>
+        <span class="lang-pt" style="display:none;">Importante: </span>
+      </span>
+      <span class="lang-en">The €750/month and €1,000 setup exclusively cover HighLevelMkt's fees for system operation. Media investment (Meta, Google, YouTube) is managed directly by the client in their own advertising accounts and is not included in the above values. Minimum recommended media budget: €800–€1,000/month.</span>
+      <span class="lang-pt" style="display:none;">Os €750/mês e €1,000 de setup cobrem exclusivamente os honorários da HighLevelMkt pela operação do sistema. O investimento em media (Meta, Google, YouTube) é gerido directamente pelo cliente nas suas próprias contas publicitárias e não está incluído nos valores acima. Orçamento mínimo recomendado em media: €800–€1,000/mês.</span>
+    </div>
+
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ============================================================
+     AUTHORITY COMPARE
+     ============================================================ -->
+<section class="section" style="background:var(--surface);">
+  <div class="container">
+
+    <div class="eyebrow reveal">
+      <span class="lang-en">09 — Positioning</span>
+      <span class="lang-pt" style="display:none;">09 — Posicionamento</span>
+    </div>
+
+    <div class="section-title reveal">
+      <span class="lang-en">GROWTH ENGINEERING<br><span class="orange">≠ MARKETING</span></span>
+      <span class="lang-pt" style="display:none;">GROWTH ENGINEERING<br><span class="orange">≠ MARKETING</span></span>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-col reveal-left">
+        <div class="compare-head muted">
+          <span class="lang-en">Traditional Marketing Agency</span>
+          <span class="lang-pt" style="display:none;">Agência de Marketing Tradicional</span>
+        </div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Model</span><span class="lang-pt" style="display:none;">Modelo</span></span><span class="val"><span class="lang-en">Campaign management</span><span class="lang-pt" style="display:none;">Gestão de campanhas</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Focus</span><span class="lang-pt" style="display:none;">Foco</span></span><span class="val"><span class="lang-en">Activity metrics</span><span class="lang-pt" style="display:none;">Métricas de actividade</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Reporting</span><span class="lang-pt" style="display:none;">Reporting</span></span><span class="val"><span class="lang-en">Impressions, clicks, CTR</span><span class="lang-pt" style="display:none;">Impressões, clicks, CTR</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Data</span><span class="lang-pt" style="display:none;">Dados</span></span><span class="val"><span class="lang-en">Basic pixel</span><span class="lang-pt" style="display:none;">Pixel básico</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Scalability</span><span class="lang-pt" style="display:none;">Escalabilidade</span></span><span class="val"><span class="lang-en">Ad-hoc decisions</span><span class="lang-pt" style="display:none;">Decisões ad-hoc</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Predictability</span><span class="lang-pt" style="display:none;">Previsibilidade</span></span><span class="val"><span class="lang-en">Low</span><span class="lang-pt" style="display:none;">Baixa</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Orientation</span><span class="lang-pt" style="display:none;">Orientação</span></span><span class="val"><span class="lang-en">Service perpetuation</span><span class="lang-pt" style="display:none;">Perpetuação do serviço</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Result</span><span class="lang-pt" style="display:none;">Resultado</span></span><span class="val"><span class="lang-en">Accidental growth</span><span class="lang-pt" style="display:none;">Crescimento acidental</span></span></div>
+      </div>
+      <div class="compare-col hlm reveal-right">
+        <div class="compare-head orange">HighLevelMkt — Growth Engineering Co.</div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Model</span><span class="lang-pt" style="display:none;">Modelo</span></span><span class="val hot"><span class="lang-en">Acquisition infrastructure</span><span class="lang-pt" style="display:none;">Infraestrutura de aquisição</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Focus</span><span class="lang-pt" style="display:none;">Foco</span></span><span class="val hot"><span class="lang-en">Revenue and margin</span><span class="lang-pt" style="display:none;">Receita e margem</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Reporting</span><span class="lang-pt" style="display:none;">Reporting</span></span><span class="val hot"><span class="lang-en">CPL, CAC, ROI, forecasting</span><span class="lang-pt" style="display:none;">CPL, CAC, ROI, forecasting</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Data</span><span class="lang-pt" style="display:none;">Dados</span></span><span class="val hot"><span class="lang-en">CAPI server-side + GA4 + CRM</span><span class="lang-pt" style="display:none;">CAPI server-side + GA4 + CRM</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Scalability</span><span class="lang-pt" style="display:none;">Escalabilidade</span></span><span class="val hot"><span class="lang-en">Rule-based protocols</span><span class="lang-pt" style="display:none;">Protocolos por regras</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Predictability</span><span class="lang-pt" style="display:none;">Previsibilidade</span></span><span class="val hot"><span class="lang-en">High — 90-day forecasting</span><span class="lang-pt" style="display:none;">Alta — forecasting 90 dias</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Orientation</span><span class="lang-pt" style="display:none;">Orientação</span></span><span class="val hot"><span class="lang-en">Financial performance</span><span class="lang-pt" style="display:none;">Performance financeira</span></span></div>
+        <div class="compare-row"><span class="attr"><span class="lang-en">Result</span><span class="lang-pt" style="display:none;">Resultado</span></span><span class="val hot"><span class="lang-en">Engineered growth</span><span class="lang-pt" style="display:none;">Crescimento engineered</span></span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     CLOSING
+     ============================================================ -->
+<section class="closing" id="contact">
+  <div class="closing-bg-text">HLM OS™</div>
+  <div class="closing-inner">
+    <div class="container">
+
+      <span class="closing-tag reveal">
+        <span class="lang-en">10 — Strategic Assessment</span>
+        <span class="lang-pt" style="display:none;">10 — Avaliação Estratégica</span>
+      </span>
+
+      <h2 class="closing-headline reveal">
+        <span class="lang-en">LIMITED AVAILABILITY.<br><span class="orange">RIGOROUS CRITERIA.</span></span>
+        <span class="lang-pt" style="display:none;">VAGAS LIMITADAS.<br><span class="orange">CRITÉRIOS RIGOROSOS.</span></span>
+      </h2>
+
+      <p class="closing-sub reveal">
+        <span class="lang-en">The HLM Predictable Revenue OS™ is operated exclusively by HighLevelMkt for a restricted number of qualified companies. The process begins with a no-commitment Strategic Assessment, in which we analyze the deployment viability for your specific business.</span>
+        <span class="lang-pt" style="display:none;">O HLM Predictable Revenue OS™ é operado em exclusividade pela HighLevelMkt para um número restrito de empresas qualificadas. O processo começa com uma Avaliação Estratégica sem compromisso, onde analisamos a viabilidade do deployment para o seu negócio.</span>
+      </p>
+
+      <div class="closing-ctas reveal">
+        <a href="https://wa.me/351910000000" class="btn-mag btn-primary-mag">
+          <div class="btn-mag-inner">
+            <span class="lang-en">Book Strategic Assessment</span>
+            <span class="lang-pt" style="display:none;">Agendar Avaliação Estratégica</span>
+          </div>
+        </a>
+        <a href="https://wa.me/351910000000" class="btn-mag btn-ghost-mag">
+          <div class="btn-mag-inner">
+            <span class="lang-en">WhatsApp Direct</span>
+            <span class="lang-pt" style="display:none;">WhatsApp Directo</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="closing-divider reveal"></div>
+
+      <div class="closing-statement reveal">
+        <span class="lang-en">WE DON'T MANAGE MARKETING.<br><span class="orange">WE ENGINEER GROWTH.</span></span>
+        <span class="lang-pt" style="display:none;">NÃO GERIMOS MARKETING.<br><span class="orange">ENGINEERAMOS CRESCIMENTO.</span></span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-copy">© 2025 HighLevelMkt — Growth Engineering Company · Portugal</div>
+      <div class="footer-sys">HLM Predictable Revenue OS™ · Proprietary System · All Rights Reserved</div>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ── LOADER ──────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
+  setTimeout(() => {
+    loader.classList.add('loader-exit');
+    setTimeout(() => {
+      loader.style.display = 'none';
+      initReveal();
+      initCounters();
+    }, 900);
+  }, 3500);
+});
+
+// ── CURSOR ──────────────────────────────────────────────────
+const dot  = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+document.addEventListener('mousemove', e => {
+  mouseX = e.clientX; mouseY = e.clientY;
+  dot.style.left = mouseX + 'px';
+  dot.style.top  = mouseY + 'px';
+});
+
+(function animateCursor() {
+  ringX += (mouseX - ringX) * 0.12;
+  ringY += (mouseY - ringY) * 0.12;
+  ring.style.left = ringX + 'px';
+  ring.style.top  = ringY + 'px';
+  requestAnimationFrame(animateCursor);
+})();
+
+// ── SCROLL PROGRESS ────────────────────────────────────────
+const progressBar = document.getElementById('progress');
+const nav = document.getElementById('nav');
+
+window.addEventListener('scroll', () => {
+  const scrolled = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+  progressBar.style.width = scrolled + '%';
+  if (window.scrollY > 50) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+// ── SCROLL REVEAL ───────────────────────────────────────────
+function initReveal() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => {
+    observer.observe(el);
+  });
+}
+
+// ── COUNTER ANIMATION ───────────────────────────────────────
+function initCounters() {
+  const counters = document.querySelectorAll('[data-count]');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const el = entry.target;
+      const target = +el.getAttribute('data-count');
+      const suffix = el.getAttribute('data-suffix') || '';
+      let current = 0;
+      const step = target / 40;
+      const timer = setInterval(() => {
+        current = Math.min(current + step, target);
+        el.textContent = Math.round(current) + suffix;
+        if (current >= target) clearInterval(timer);
+      }, 30);
+      observer.unobserve(el);
+    });
+  }, { threshold: 0.5 });
+  counters.forEach(c => observer.observe(c));
+}
+
+// ── LANGUAGE TOGGLE ────────────────────────────────────────
+let currentLang = 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+
+  // update btn states
+  document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+  document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+
+  // toggle body class
+  document.body.classList.toggle('lang-active-pt', lang === 'pt');
+
+  // toggle all lang spans/divs
+  document.querySelectorAll('.lang-en').forEach(el => {
+    el.style.display = lang === 'en' ? '' : 'none';
+  });
+  document.querySelectorAll('.lang-pt').forEach(el => {
+    el.style.display = lang === 'pt' ? '' : 'none';
+  });
+
+  // update html lang attr
+  document.documentElement.lang = lang === 'pt' ? 'pt' : 'en';
+}
+
+// initial state — show EN, hide PT
+setLang('en');
+
+// ── MAGNETIC BUTTONS ────────────────────────────────────────
+document.querySelectorAll('.btn-mag').forEach(btn => {
+  btn.addEventListener('mousemove', e => {
+    const rect = btn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = (e.clientX - cx) * 0.25;
+    const dy = (e.clientY - cy) * 0.25;
+    btn.style.transform = `translate(${dx}px, ${dy}px)`;
+    btn.querySelector('.btn-mag-inner').style.transform = `translate(${dx * 0.3}px, ${dy * 0.3}px)`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    btn.style.transform = '';
+    btn.querySelector('.btn-mag-inner').style.transform = '';
+  });
+});
+
+// ── LAYER HOVER EFFECT ──────────────────────────────────────
+document.querySelectorAll('.layer').forEach(layer => {
+  layer.addEventListener('mouseenter', () => {
+    layer.querySelectorAll('.tech-tag').forEach((tag, i) => {
+      setTimeout(() => {
+        tag.style.borderColor = 'rgba(255,85,0,0.3)';
+        tag.style.color = 'var(--text2)';
+      }, i * 30);
+    });
+  });
+  layer.addEventListener('mouseleave', () => {
+    layer.querySelectorAll('.tech-tag').forEach(tag => {
+      tag.style.borderColor = '';
+      tag.style.color = '';
+    });
+  });
+});
+
+// ── PARALLAX HERO GRID ─────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const grid = document.querySelector('.hero-grid');
+  if (grid) grid.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+});
+
+// ── METRIC HOVER GLOW ──────────────────────────────────────
+document.querySelectorAll('.metric').forEach(m => {
+  m.addEventListener('mouseenter', () => {
+    m.querySelector('.metric-num').style.textShadow = '0 0 20px rgba(255,85,0,0.5)';
+  });
+  m.addEventListener('mouseleave', () => {
+    m.querySelector('.metric-num').style.textShadow = '';
+  });
+});
+</script>
+
+</body>
+</html>
