@@ -69,7 +69,10 @@
       property="twitter:description"
       content="Agência de marketing e publicidade em Portugal. Tráfego pago, Google Ads, Meta Ads e SEO para gerar mais clientes."
     />
-    <meta property="twitter:image" content="https://highlevelmkt.com/og-image.jpg" />
+    <meta
+      property="twitter:image"
+      content="https://highlevelmkt.com/og-image.jpg"
+    />
 
     <!-- Schema.org - ProfessionalService -->
     <script type="application/ld+json">
@@ -100,6 +103,42 @@
         ]
       }
     </script>
+
+    <!-- ✅ Meta Pixel Stub (fila) IMEDIATO — não perde cliques antes do load -->
+    <script>
+      (function () {
+        // cria fbq imediatamente (sem carregar a lib)
+        !(function (f, b, e, v, n, t, s) {
+          if (f.fbq) return;
+          n = f.fbq = function () {
+            n.callMethod
+              ? n.callMethod.apply(n, arguments)
+              : n.queue.push(arguments);
+          };
+          if (!f._fbq) f._fbq = n;
+          n.push = n;
+          n.loaded = false;
+          n.version = "2.0";
+          n.queue = [];
+        })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+
+        // init já aqui (leve)
+        window.fbq("init", "4331967567089383");
+
+        // helpers seguros
+        window.__HLM = window.__HLM || {};
+        window.__HLM.safeFbq = function () {
+          if (typeof window.fbq === "function") {
+            try {
+              window.fbq.apply(null, arguments);
+            } catch (e) {}
+          }
+        };
+        window.__HLM.isOSPage = function () {
+          return (window.location && window.location.pathname || "").startsWith("/os");
+        };
+      })();
+    </script>
   </head>
 
   <body>
@@ -118,15 +157,14 @@
     <!-- App -->
     <script type="module" src="/src/main.jsx"></script>
 
-    <!-- ✅ Tracking carregando APÓS o load (protege LCP/FCP/CLS) -->
+    <!-- ✅ Tracking carregando APÓS o load/idle (protege LCP/FCP/CLS) + EVENTOS -->
     <script>
       window.addEventListener("load", function () {
-        function loadTracking() {
-          // Google Tag / GA4
+        function loadTrackingLibs() {
+          // ---- Google Tag / GA4 (como você já tinha) ----
           var gtagScript = document.createElement("script");
           gtagScript.async = true;
-          gtagScript.src =
-            "https://www.googletagmanager.com/gtag/js?id=GT-NMDNDC9Q";
+          gtagScript.src = "https://www.googletagmanager.com/gtag/js?id=GT-NMDNDC9Q";
           document.head.appendChild(gtagScript);
 
           window.dataLayer = window.dataLayer || [];
@@ -139,40 +177,140 @@
           gtag("config", "GT-NMDNDC9Q");
           gtag("config", "G-YQCBN4SH2K", { anonymize_ip: true });
 
-          // Meta Pixel
-          !(function (f, b, e, v, n, t, s) {
-            if (f.fbq) return;
-            n = f.fbq = function () {
-              n.callMethod
-                ? n.callMethod.apply(n, arguments)
-                : n.queue.push(arguments);
-            };
-            if (!f._fbq) f._fbq = n;
-            n.push = n;
-            n.loaded = true;
-            n.version = "2.0";
-            n.queue = [];
-            t = b.createElement(e);
-            t.async = true;
-            t.src = v;
-            s = b.getElementsByTagName(e)[0];
-            s.parentNode.insertBefore(t, s);
-          })(
-            window,
-            document,
-            "script",
-            "https://connect.facebook.net/en_US/fbevents.js"
-          );
+          // ---- Meta Pixel library (carrega real) ----
+          var fbScript = document.createElement("script");
+          fbScript.async = true;
+          fbScript.src = "https://connect.facebook.net/en_US/fbevents.js";
+          document.head.appendChild(fbScript);
 
-          fbq("init", "4331967567089383");
-          fbq("track", "PageView");
+          // PageView sempre
+          window.__HLM.safeFbq("track", "PageView");
         }
 
+        // Carrega libs em idle para performance
         if ("requestIdleCallback" in window) {
-          requestIdleCallback(loadTracking, { timeout: 2000 });
+          requestIdleCallback(loadTrackingLibs, { timeout: 2000 });
         } else {
-          setTimeout(loadTracking, 1500);
+          setTimeout(loadTrackingLibs, 1200);
         }
+
+        // ----------------------------
+        // EVENTOS DO MÉTODO (META)
+        // ----------------------------
+
+        // 1) Page view específica do OS (quando estiver em /os)
+        (function fireOSPageViewOnce() {
+          if (!window.__HLM.isOSPage()) return;
+
+          // dispara assim que possível (entra na fila se a lib ainda não carregou)
+          window.__HLM.safeFbq("track", "ViewContent", { content_name: "HLM Predictable Revenue OS" });
+          window.__HLM.safeFbq("trackCustom", "OS_PageView", { path: window.location.pathname });
+        })();
+
+        // 2) Clique em WhatsApp + Schedule (Calendly) + cliques externos (exit)
+        document.addEventListener("click", function (e) {
+          var el = e.target;
+          if (!el) return;
+
+          // sobe até achar um link/botão clicável
+          var a = el.closest ? el.closest("a,button") : null;
+          if (!a) return;
+
+          var href = (a.getAttribute && a.getAttribute("href")) || "";
+          var text = (a.textContent || "").toLowerCase();
+
+          var isOS = window.__HLM.isOSPage();
+
+          // WhatsApp detect
+          var isWhats =
+            href.includes("wa.me") ||
+            href.includes("whatsapp.com") ||
+            href.includes("api.whatsapp.com") ||
+            text.includes("whatsapp");
+
+          if (isWhats) {
+            window.__HLM.safeFbq("track", "Contact");
+            window.__HLM.safeFbq("trackCustom", "OS_WhatsApp_Click", {
+              path: window.location.pathname,
+              href: href || null
+            });
+            return;
+          }
+
+          // Calendly / agendamento detect
+          var isSchedule =
+            href.toLowerCase().includes("calendly") ||
+            text.includes("agendar") ||
+            text.includes("avaliação estratégica") ||
+            text.includes("avaliacao estrategica");
+
+          // ⚠️ Para evitar falso positivo fora do OS, só dispara Schedule se estiver na página /os
+          if (isOS && isSchedule) {
+            window.__HLM.safeFbq("track", "Schedule");
+            window.__HLM.safeFbq("trackCustom", "OS_Schedule_Click", {
+              path: window.location.pathname,
+              href: href || null,
+              label: (a.textContent || "").trim().slice(0, 80)
+            });
+          }
+
+          // Exit click (link externo) — só na página /os (opcional)
+          if (isOS && href && /^https?:\/\//i.test(href)) {
+            try {
+              var url = new URL(href, window.location.origin);
+              if (url.host && url.host !== window.location.host) {
+                window.__HLM.safeFbq("trackCustom", "OS_Exit_Click", {
+                  from: window.location.pathname,
+                  to: url.host
+                });
+              }
+            } catch (_) {}
+          }
+        }, true);
+
+        // 3) Submit de formulário => Lead + custom OS_Lead (se estiver em /os)
+        document.addEventListener("submit", function (e) {
+          if (!e || !e.target) return;
+
+          var isOS = window.__HLM.isOSPage();
+          var form = e.target;
+
+          // Dispara Lead para qualquer form (podes restringir depois se quiseres)
+          window.__HLM.safeFbq("track", "Lead");
+
+          if (isOS) {
+            window.__HLM.safeFbq("trackCustom", "OS_Lead", {
+              path: window.location.pathname,
+              formId: form.id || null,
+              formName: form.getAttribute("name") || null
+            });
+          }
+        }, true);
+
+        // 4) Scroll 50% (só na página /os)
+        (function setupScrollDepth() {
+          if (!window.__HLM.isOSPage()) return;
+
+          var fired = false;
+          function onScroll() {
+            if (fired) return;
+            var doc = document.documentElement;
+            var scrollTop = window.pageYOffset || doc.scrollTop || 0;
+            var height = (doc.scrollHeight || 0) - (window.innerHeight || 0);
+            if (height <= 0) return;
+            var pct = scrollTop / height;
+
+            if (pct >= 0.5) {
+              fired = true;
+              window.__HLM.safeFbq("trackCustom", "OS_Scroll_50", {
+                path: window.location.pathname
+              });
+              window.removeEventListener("scroll", onScroll, { passive: true });
+            }
+          }
+          window.addEventListener("scroll", onScroll, { passive: true });
+        })();
+
       });
     </script>
   </body>
